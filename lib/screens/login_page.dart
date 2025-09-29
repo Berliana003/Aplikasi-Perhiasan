@@ -4,6 +4,7 @@ import 'package:flutter_application_1/screens/forgot_password_page.dart';
 import 'package:flutter_application_1/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'signup_page.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -58,10 +59,13 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePage()),
-        );
+        setState(() => _isLoading = false);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const HomePage()),
+          );
+        });
       }
     } on FirebaseAuthException catch (e) {
       String message = "Login gagal. Silakan coba lagi.";
@@ -72,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (mounted) {
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: Colors.red),
         );
@@ -233,8 +238,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         child: _isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
+                            ? LoadingAnimationWidget.staggeredDotsWave(
+                                color: const Color.fromRGBO(255, 255, 255, 1),
+                                size: 30,
                               )
                             : const Text(
                                 "Login",

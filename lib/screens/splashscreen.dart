@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'welcome_page.dart'; // halaman tujuan setelah splash
+import 'welcome_page.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -100,10 +101,10 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
               const SizedBox(height: 30),
-              // Loading indicator
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                strokeWidth: 5,
+              // Loading indicator pakai dotsTriangle
+              LoadingAnimationWidget.dotsTriangle(
+                color: Colors.white,
+                size: 60,
               ),
             ],
           ),
