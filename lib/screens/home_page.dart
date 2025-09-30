@@ -8,6 +8,7 @@ import 'package:flutter_application_1/models/berlian.dart';
 import 'package:flutter_application_1/models/product.dart';
 import 'package:flutter_application_1/screens/notification_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'category_page.dart';
 
 class Category {
@@ -102,6 +103,10 @@ class _HomePageState extends State<HomePage> {
           builder: (context, setStateDialog) {
             return AlertDialog(
               title: Text(
+                style: GoogleFonts.mouseMemoirs(
+                  color: Colors.black,
+                  fontSize: 30,
+                ),
                 category == null ? "Tambah Kategori" : "Edit Kategori",
               ),
               content: Column(
@@ -109,6 +114,10 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   TextField(
                     controller: nameController,
+                    style: GoogleFonts.caveat(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
                     decoration: const InputDecoration(
                       labelText: "Nama Kategori",
                     ),
@@ -145,7 +154,13 @@ class _HomePageState extends State<HomePage> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Batal"),
+                  child: Text(
+                    "Batal",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -165,7 +180,13 @@ class _HomePageState extends State<HomePage> {
 
                     Navigator.pop(context);
                   },
-                  child: const Text("Simpan"),
+                  child: Text(
+                    "Simpan",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -208,7 +229,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D47A1),
         centerTitle: true,
-        title: const Text("Home", style: TextStyle(color: Colors.white)),
+        title: Text(
+          "Home",
+          style: GoogleFonts.youngSerif(
+            fontSize: 35,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
@@ -232,10 +260,10 @@ class _HomePageState extends State<HomePage> {
           children: [
             Column(
               children: [
-                const Text(
+                Text(
                   "Selamat Datang 👋",
-                  style: TextStyle(
-                    fontSize: 22,
+                  style: GoogleFonts.cinzel(
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0D47A1),
                   ),
@@ -243,7 +271,10 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 6),
                 Text(
                   user?.email ?? "User",
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  style: GoogleFonts.berkshireSwash(
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 16),
               ],
@@ -255,7 +286,11 @@ class _HomePageState extends State<HomePage> {
               onChanged: (_) => _applyFilters(),
               decoration: InputDecoration(
                 hintText: "Search",
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: GoogleFonts.berkshireSwash(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+                prefixIcon: const Icon(Icons.search, color: Colors.black),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.filter_list, color: Colors.blue),
                   onPressed: () => _applyFilters(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/screens/forgot_password_page.dart';
 import 'package:flutter_application_1/screens/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'signup_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -107,22 +108,27 @@ class _LoginPageState extends State<LoginPage> {
                     bottomRight: Radius.circular(40),
                   ),
                 ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 40),
                     Text(
                       "Welcome Back!",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.youngSerif(
+                        fontSize: 35,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 8),
                     Text(
                       "Login to continue",
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.berkshireSwash(
+                        color: Colors.white70,
+                        fontSize: 20,
+                      ),
                     ),
                   ],
                 ),
@@ -138,18 +144,19 @@ class _LoginPageState extends State<LoginPage> {
                     // Email
                     TextField(
                       controller: _emailController,
-                      style: const TextStyle(color: Colors.black),
+                      style: GoogleFonts.crimsonPro(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                       decoration: InputDecoration(
                         labelText: "Email",
-                        labelStyle: const TextStyle(
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 15,
                           color: Colors.black87,
-                        ), // label lebih jelas
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Color(0xFF0D47A1),
                         ),
+                        prefixIcon: Icon(Icons.email, color: Color(0xFF0D47A1)),
                         filled: true,
-                        fillColor: const Color(0xFFB3E5FC),
+                        fillColor: Color(0xFFB3E5FC),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -162,10 +169,16 @@ class _LoginPageState extends State<LoginPage> {
                     TextField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
-                      style: const TextStyle(color: Colors.black),
+                      style: GoogleFonts.crimsonPro(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                       decoration: InputDecoration(
                         labelText: "Password",
-                        labelStyle: const TextStyle(color: Colors.black87),
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          color: Colors.black87,
+                          fontSize: 15,
+                        ),
                         prefixIcon: const Icon(
                           Icons.lock,
                           color: Color(0xFF0D47A1),
@@ -205,7 +218,13 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                         ),
-                        const Text("Remember Me"),
+                        Text(
+                          "Remember Me",
+                          style: GoogleFonts.berkshireSwash(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
                         const Spacer(),
                         TextButton(
                           onPressed: () {
@@ -216,9 +235,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "Forgot Password?",
-                            style: TextStyle(color: Color(0xFF0D47A1)),
+                            style: GoogleFonts.berkshireSwash(
+                              color: Color(0xFF0D47A1),
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ],
@@ -242,10 +264,11 @@ class _LoginPageState extends State<LoginPage> {
                                 color: const Color.fromRGBO(255, 255, 255, 1),
                                 size: 30,
                               )
-                            : const Text(
+                            : Text(
                                 "Login",
-                                style: TextStyle(
-                                  fontSize: 18,
+                                style: GoogleFonts.cinzel(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
@@ -257,7 +280,14 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account? "),
+                        Text(
+                          "Don't have an account?",
+                          style: GoogleFonts.berkshireSwash(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(
@@ -267,11 +297,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "Sign Up",
-                            style: TextStyle(
+                            style: GoogleFonts.berkshireSwash(
                               color: Color(0xFF0D47A1),
                               fontWeight: FontWeight.bold,
+                              fontSize: 15,
                             ),
                           ),
                         ),

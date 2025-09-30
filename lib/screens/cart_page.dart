@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/category_page.dart';
 import 'package:flutter_application_1/screens/checkout_page.dart';
+import 'package:badges/badges.dart' as badges;
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -64,6 +65,27 @@ class _CartPageState extends State<CartPage> {
           "Keranjang Belanja",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          badges.Badge(
+            showBadge: cartItems.isNotEmpty,
+            position: badges.BadgePosition.topEnd(top: 0, end: 3),
+            badgeAnimation: badges.BadgeAnimation.slide(
+              toAnimate: true,
+              curve: Curves.easeInOut,
+              animationDuration: const Duration(milliseconds: 300),
+            ),
+            badgeContent: Text(
+              "${cartItems.length}",
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+              onPressed: () {
+                // Aksi kalau ikon keranjang ditekan
+              },
+            ),
+          ),
+        ],
       ),
       body: cartItems.isEmpty
           ? const Center(child: Text("Keranjang kosong"))

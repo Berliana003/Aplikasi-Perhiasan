@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/screens/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'login_page.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -95,25 +96,30 @@ class _SignUpPageState extends State<SignUpPage> {
                         MaterialPageRoute(builder: (_) => const LoginPage()),
                       );
                     },
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.arrow_back, color: Colors.white),
                         SizedBox(width: 6),
                         Text(
                           "Back to login",
-                          style: TextStyle(color: Colors.white),
+                          style: GoogleFonts.berkshireSwash(
+                            color: Colors.white70,
+                            fontSize: 20,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 40),
-                  const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                  Center(
+                    child: Text(
+                      "Sign Up",
+                      style: GoogleFonts.youngSerif(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
@@ -130,8 +136,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Email
                   TextField(
                     controller: _emailController,
+                    style: GoogleFonts.crimsonPro(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
                     decoration: InputDecoration(
                       labelText: "Email",
+                      labelStyle: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
                       prefixIcon: const Icon(
                         Icons.email,
                         color: Color(0xFF0D47A1),
@@ -149,9 +163,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Password
                   TextField(
                     controller: _passwordController,
+                    style: GoogleFonts.crimsonPro(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: "Password",
+                      labelStyle: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
                       prefixIcon: const Icon(
                         Icons.lock,
                         color: Color(0xFF0D47A1),
@@ -161,7 +183,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           _obscurePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.grey,
+                          color: const Color.fromARGB(255, 90, 120, 200),
                         ),
                         onPressed: () {
                           setState(() => _obscurePassword = !_obscurePassword);
@@ -180,9 +202,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Confirm Password
                   TextField(
                     controller: _confirmController,
+                    style: GoogleFonts.crimsonPro(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
                     obscureText: _obscureConfirm,
                     decoration: InputDecoration(
                       labelText: "Confirm Password",
+                      labelStyle: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
                       prefixIcon: const Icon(
                         Icons.lock_outline,
                         color: Color(0xFF0D47A1),
@@ -192,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           _obscureConfirm
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.grey,
+                          color: const Color.fromARGB(255, 90, 120, 200),
                         ),
                         onPressed: () {
                           setState(() => _obscureConfirm = !_obscureConfirm);
@@ -211,9 +241,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Phone
                   TextField(
                     controller: _phoneController,
+                    style: GoogleFonts.crimsonPro(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       labelText: "Phone",
+                      labelStyle: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
                       prefixIcon: const Icon(
                         Icons.phone,
                         color: Color(0xFF0D47A1),
@@ -242,10 +280,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
+                          : Text(
                               "Sign Up",
-                              style: TextStyle(
-                                fontSize: 18,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.cinzel(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),

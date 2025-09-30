@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'welcome_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -66,10 +67,10 @@ class _SplashScreenState extends State<SplashScreen>
               Image.asset("assets/image/logo_berlian.png", height: 200),
 
               // Nama aplikasi
-              const Text(
+              Text(
                 "Brilliant",
-                style: TextStyle(
-                  fontSize: 28,
+                style: GoogleFonts.cinzel(
+                  fontSize: 50,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   letterSpacing: 2,
@@ -83,18 +84,18 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "Created by Dewi Berliana",
-                style: TextStyle(
+                style: GoogleFonts.merriweather(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
+              Text(
                 "Kelas A_24111814003",
-                style: TextStyle(
+                style: GoogleFonts.merriweather(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

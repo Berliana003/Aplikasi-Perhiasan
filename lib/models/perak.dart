@@ -29,6 +29,40 @@ class Perak extends Product {
          variations: variations,
        );
 
+  // Getter
+  String get productName => name;
+  double get productPrice => price;
+  double get productDiskon => diskon;
+  double get finalPrice => price - (price * (diskon / 100));
+  int get stockTersisa => stock;
+  String get ringkasan =>
+      "$name | Rp${finalPrice.toStringAsFixed(0)} (${diskon.toStringAsFixed(0)}% OFF)";
+
+  // Setter
+  set updateName(String newName) {
+    if (newName.isNotEmpty) {
+      name = newName;
+    }
+  }
+
+  set updatePrice(double newPrice) {
+    if (newPrice > 0) {
+      price = newPrice;
+    }
+  }
+
+  set updateDiskon(double newDiskon) {
+    if (newDiskon >= 0 && newDiskon <= 100) {
+      diskon = newDiskon;
+    }
+  }
+
+  set updateStock(int newStock) {
+    if (newStock >= 0) {
+      stock = newStock;
+    }
+  }
+
   /// Override untuk memberi label khusus Perak
   @override
   String toString() {
@@ -44,7 +78,7 @@ List<Perak> daftarPerak = [
     diskon: 2,
     price: 600000,
     image: "assets/image/kalung_perak.jpg",
-    rating: 4.5,
+    rating: 5.0,
     sold: 120,
     stock: 40,
     deliveryDays: 3,
@@ -72,7 +106,7 @@ List<Perak> daftarPerak = [
     diskon: 0,
     price: 525000,
     image: "assets/image/anting_perak.jpg",
-    rating: 4.3,
+    rating: 4.0,
     sold: 85,
     stock: 55,
     deliveryDays: 3,
@@ -99,7 +133,7 @@ List<Perak> daftarPerak = [
     diskon: 3,
     price: 800000,
     image: "assets/image/gelang_perak.jpg",
-    rating: 4.6,
+    rating: 4.5,
     sold: 102,
     stock: 25,
     deliveryDays: 3,
@@ -126,7 +160,7 @@ List<Perak> daftarPerak = [
     diskon: 5,
     price: 600000,
     image: "assets/image/cincin_perak.jpg",
-    rating: 4.7,
+    rating: 4.0,
     sold: 95,
     stock: 60,
     deliveryDays: 3,

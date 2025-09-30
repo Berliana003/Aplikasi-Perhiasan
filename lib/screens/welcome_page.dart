@@ -1,27 +1,58 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 
   @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final Random _random = Random();
+  late List<double> _randomLeft; // simpan posisi horizontal
+  late List<double> _randomSize; // simpan ukuran icon
+  final int _iconCount = 25; //jumlah love
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // generate posisi horizontal random
+    _randomLeft = List.generate(
+      _iconCount,
+      (_) => _random.nextDouble() * screenWidth,
+    );
+    _randomSize = List.generate(
+      _iconCount,
+      (_) => 24 + _random.nextDouble() * 20,
+    );
+
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFFB3E5FC), Colors.white],
-                ),
-              ),
-            ),
-          ),
-          // Background gradient
+          // background gradient
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
@@ -34,52 +65,33 @@ class WelcomePage extends StatelessWidget {
             ),
           ),
 
-          // Bubble acak
-          Positioned(top: 40, left: 20, child: _buildBubble(100, Colors.white)),
-          Positioned(
-            top: 120,
-            right: 50,
-            child: _buildBubble(60, Color(0xFFB3E5FC)),
-          ),
-          Positioned(
-            top: 200,
-            left: 100,
-            child: _buildBubble(80, Colors.white),
-          ),
-          Positioned(
-            top: 320,
-            right: 30,
-            child: _buildBubble(50, Colors.white),
-          ),
-          Positioned(
-            top: 400,
-            left: 60,
-            child: _buildBubble(70, Color(0xFFB3E5FC)),
-          ),
-          Positioned(
-            bottom: 320,
-            right: 100,
-            child: _buildBubble(90, Colors.white),
-          ),
-          Positioned(
-            bottom: 260,
-            left: 30,
-            child: _buildBubble(60, Colors.white),
-          ),
-          Positioned(
-            bottom: 180,
-            right: 60,
-            child: _buildBubble(110, Color(0xFFB3E5FC)),
-          ),
-          Positioned(
-            bottom: 100,
-            left: 90,
-            child: _buildBubble(70, Colors.white),
-          ),
-          Positioned(
-            bottom: 40,
-            right: 40,
-            child: _buildBubble(50, Colors.white),
+          // animasi love
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              final height = MediaQuery.of(context).size.height;
+              final progress = _controller.value;
+
+              return Stack(
+                children: List.generate(_iconCount, (index) {
+                  // posisi horizontal random
+                  final dy =
+                      height - (progress * height + index * 100) % height;
+
+                  return Positioned(
+                    left: _randomLeft[index] % screenWidth,
+                    top: dy,
+                    child: Icon(
+                      Icons.favorite,
+                      color: index.isEven
+                          ? const Color(0xFF90CAF9)
+                          : Colors.white,
+                      size: _randomSize[index],
+                    ),
+                  );
+                }),
+              );
+            },
           ),
 
           SafeArea(
@@ -97,10 +109,10 @@ class WelcomePage extends StatelessWidget {
                             height: 200,
                           ),
                           const SizedBox(height: 1),
-                          const Text(
-                            "Be Brilliant",
-                            style: TextStyle(
-                              fontSize: 30,
+                          Text(
+                            "Brilliant",
+                            style: GoogleFonts.cinzel(
+                              fontSize: 50,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF0D47A1),
                             ),
@@ -131,10 +143,10 @@ class WelcomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Welcome",
-                          style: TextStyle(
-                            fontSize: 26,
+                          style: GoogleFonts.youngSerif(
+                            fontSize: 35,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF0D47A1),
                           ),
@@ -167,7 +179,13 @@ class WelcomePage extends StatelessWidget {
                               shadowColor: Colors.black45,
                               elevation: 5,
                             ),
-                            child: const Text("Sign In"),
+                            child: Text(
+                              "Sign In",
+                              style: GoogleFonts.cinzel(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -196,9 +214,13 @@ class WelcomePage extends StatelessWidget {
                               ),
                               padding: const EdgeInsets.all(12),
                             ),
-                            child: const Text(
+                            child: Text(
                               "Sign Up",
-                              style: TextStyle(color: Color(0xFF0D47A1)),
+                              style: GoogleFonts.cinzel(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0D47A1),
+                              ),
                             ),
                           ),
                         ),
@@ -208,24 +230,6 @@ class WelcomePage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBubble(double size, Color color) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withOpacity(0.90),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.2),
-            blurRadius: 12,
-            offset: const Offset(2, 4),
           ),
         ],
       ),

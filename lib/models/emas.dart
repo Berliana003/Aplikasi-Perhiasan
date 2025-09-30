@@ -29,6 +29,49 @@ class Emas extends Product {
          variations: variations,
        );
 
+  // Getter
+  // Hitung harga setelah diskon
+  double get finalPrice => price - (price * (diskon / 100));
+
+  // Informasi singkat produk
+  String get shortInfo => "$name - Rp$price (Diskon: $diskon%)";
+
+  // Status stok
+  String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
+
+  // Setter
+  set updatePrice(double newPrice) {
+    if (newPrice > 0) {
+      price = newPrice;
+    } else {
+      throw Exception("❌ Harga emas tidak boleh 0 atau negatif!");
+    }
+  }
+
+  set updateDiskon(double newDiskon) {
+    if (newDiskon >= 0 && newDiskon <= 100) {
+      diskon = newDiskon;
+    } else {
+      throw Exception("❌ Diskon harus antara 0–100%");
+    }
+  }
+
+  set updateStock(int newStock) {
+    if (newStock >= 0) {
+      stock = newStock;
+    } else {
+      throw Exception("❌ Stok tidak boleh negatif!");
+    }
+  }
+
+  set updateName(String newName) {
+    if (newName.isNotEmpty) {
+      name = newName;
+    } else {
+      throw Exception("❌ Nama produk tidak boleh kosong!");
+    }
+  }
+
   // Override untuk memberi label khusus emas
   @override
   String toString() {
@@ -44,7 +87,7 @@ List<Emas> daftarEmas = [
     diskon: 5,
     price: 3900000,
     image: "assets/image/kalung_emas.jpg",
-    rating: 4.7,
+    rating: 5.0,
     sold: 150,
     stock: 20,
     deliveryDays: 3,
@@ -103,7 +146,7 @@ List<Emas> daftarEmas = [
     diskon: 3,
     price: 5000000,
     image: "assets/image/gelang_emas.jpg",
-    rating: 4.6,
+    rating: 4.0,
     sold: 87,
     stock: 15,
     deliveryDays: 3,
@@ -133,7 +176,7 @@ List<Emas> daftarEmas = [
     diskon: 0,
     price: 1200000,
     image: "assets/image/anting_emas.jpg",
-    rating: 4.4,
+    rating: 4.0,
     sold: 72,
     stock: 25,
     deliveryDays: 3,

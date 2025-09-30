@@ -29,10 +29,53 @@ class Berlian extends Product {
          variations: variations,
        );
 
+  // Getter
+  // Mengambil harga setelah diskon
+  double get finalPrice => price - (price * (diskon / 100));
+
+  // Ambil info singkat produk
+  String get shortInfo => "$name - Rp$price (Diskon: $diskon%)";
+
+  // Ambil status stok
+  String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
+
+  // Setter
+  set updatePrice(double newPrice) {
+    if (newPrice > 0) {
+      price = newPrice;
+    } else {
+      throw Exception("Harga tidak boleh 0 atau negatif!");
+    }
+  }
+
+  set updateDiskon(double newDiskon) {
+    if (newDiskon >= 0 && newDiskon <= 100) {
+      diskon = newDiskon;
+    } else {
+      throw Exception("Diskon harus antara 0–100%");
+    }
+  }
+
+  set updateStock(int newStock) {
+    if (newStock >= 0) {
+      stock = newStock;
+    } else {
+      throw Exception("Stok tidak boleh negatif!");
+    }
+  }
+
+  set updateName(String newName) {
+    if (newName.isNotEmpty) {
+      name = newName;
+    } else {
+      throw Exception("Nama produk tidak boleh kosong!");
+    }
+  }
+
   /// Override method untuk menambahkan ikon khusus Berlian
   @override
   String toString() {
-    return "💎 Berlian: ${super.toString()}";
+    return "💎 Berlian: ${super.toString()} | Final Price: Rp$finalPrice | Status: $stockStatus";
   }
 }
 
@@ -44,7 +87,7 @@ List<Berlian> daftarBerlian = [
     diskon: 10,
     price: 120000000,
     image: "assets/image/kalung_berlian.jpg",
-    rating: 4.8,
+    rating: 5.0,
     sold: 120,
     stock: 20,
     deliveryDays: 3,
@@ -80,7 +123,7 @@ List<Berlian> daftarBerlian = [
     diskon: 8,
     price: 9600000,
     image: "assets/image/cincin_berlian.jpg",
-    rating: 4.6,
+    rating: 4.5,
     sold: 95,
     stock: 10,
     deliveryDays: 3,
@@ -112,7 +155,7 @@ List<Berlian> daftarBerlian = [
     diskon: 9,
     price: 83600000,
     image: "assets/image/gelang_berlian.jpg",
-    rating: 4.7,
+    rating: 4.0,
     sold: 77,
     stock: 8,
     deliveryDays: 3,
@@ -143,7 +186,7 @@ List<Berlian> daftarBerlian = [
     diskon: 6,
     price: 7000000,
     image: "assets/image/anting_berlian.jpg",
-    rating: 4.5,
+    rating: 4.0,
     sold: 64,
     stock: 12,
     deliveryDays: 3,

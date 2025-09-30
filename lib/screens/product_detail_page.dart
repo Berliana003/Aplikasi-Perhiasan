@@ -6,6 +6,8 @@ import 'cart_page.dart';
 import 'checkout_page.dart';
 import 'package:flutter_application_1/screens/category_page.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -77,9 +79,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   MaterialPageRoute(builder: (_) => CartPage()),
                 );
               },
-              icon: const Icon(
-                Icons.shopping_cart_outlined,
-                color: Colors.orange,
+              icon: badges.Badge(
+                showBadge: cartItems.isNotEmpty,
+                position: badges.BadgePosition.topStart(top: -10, start: -12),
+                badgeAnimation: badges.BadgeAnimation.slide(
+                  toAnimate: true,
+                  curve: Curves.easeInOut,
+                  animationDuration: const Duration(milliseconds: 300),
+                ),
+                badgeContent: Text(
+                  "${cartItems.length}", // jumlah produk unik
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                ),
+                child: const Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Colors.orange,
+                ),
               ),
               label: const Text(
                 "Keranjang",
@@ -318,9 +333,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  RatingBar.builder(
+                    initialRating: product.rating,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 22,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) =>
+                        const Icon(Icons.star, color: Colors.amber),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        // update rating produk (sementara)
+                        widget.product.rating = rating;
+                      });
+                      print("Rating baru: $rating");
+                    },
+                  ),
+                  const SizedBox(width: 8),
                   Text(
-                    " ${product.rating.toStringAsFixed(1)}",
+                    product.rating.toStringAsFixed(1),
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
