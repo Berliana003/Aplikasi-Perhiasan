@@ -2,32 +2,19 @@ import 'product.dart';
 
 class Perak extends Product {
   Perak({
-    required String id,
-    required String name,
-    required double diskon,
-    required double price,
-    required String image,
-    required double rating,
-    required int sold,
-    required int stock,
-    required int deliveryDays,
-    String? description,
-    List<String>? specs,
-    Map<String, List<String>>? variations,
-  }) : super(
-         id: id,
-         name: name,
-         diskon: diskon,
-         price: price,
-         image: image,
-         rating: rating,
-         sold: sold,
-         stock: stock,
-         deliveryDays: deliveryDays,
-         description: description,
-         specs: specs,
-         variations: variations,
-       );
+    required super.id,
+    required super.name,
+    required super.diskon,
+    required super.price,
+    required super.image,
+    required super.rating,
+    required super.sold,
+    required super.stock,
+    required super.deliveryDays,
+    super.description,
+    super.specification,
+    super.variation,
+  });
 
   // Getter
   String get productName => name;
@@ -87,14 +74,14 @@ List<Perak> daftarPerak = [
         "Dibuat dari perak murni berkualitas tinggi, kalung ini memiliki kilau alami yang anggun "
         "serta ringan saat dipakai, cocok untuk aktivitas sehari-hari maupun acara kasual.",
 
-    specs: [
+    specification: [
       "Material: Perak Murni 925 (Sterling Silver)",
       "Warna: Silver Berkilau",
       "Finishing: Anti Tarnish (tidak mudah kusam)",
       "Kategori: Fashion Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Panjang": ["40 cm", "45 cm", "50 cm"],
       "Model": ["Rantai Polos", "Box Chain", "Rope Chain", "Pendant Minimalis"],
       "Berat": ["2 gr", "3 gr", "5 gr"],
@@ -114,14 +101,14 @@ List<Perak> daftarPerak = [
         "Anting perak Brilliant dirancang untuk Anda yang mengutamakan gaya praktis namun tetap elegan. "
         "Terbuat dari perak murni berkualitas tinggi dengan lapisan anti tarnish, nyaman dipakai sepanjang hari.",
 
-    specs: [
+    specification: [
       "Material: Perak Murni 925 (Sterling Silver)",
       "Warna: Silver Natural Berkilau",
       "Finishing: Halus & Anti Kusam",
       "Kategori: Fashion Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Bentuk": ["Stud", "Hoop", "Drop", "Geometris"],
       "Berat": ["1 gr", "2 gr", "3 gr"],
       "Detail": ["Polos", "Bermotif", "Dihiasi Zircon/Permata Sintetis"],
@@ -141,14 +128,14 @@ List<Perak> daftarPerak = [
         "Gelang perak Brilliant hadir dengan desain trendi yang memadukan kesederhanaan dan keanggunan. "
         "Terbuat dari perak murni 925 berkualitas tinggi, gelang ini ringan, nyaman, dan anti tarnish.",
 
-    specs: [
+    specification: [
       "Material: Perak Murni 925 (Sterling Silver)",
       "Warna: Silver Mengkilap Natural",
       "Finishing: Presisi & Anti Kusam",
       "Kategori: Fashion Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Panjang": ["16 cm", "18 cm", "20 cm"],
       "Berat": ["3 gr", "5 gr", "7 gr"],
       "Model": ["Rantai Polos", "Rope Chain", "Box Chain", "Charm Bracelet"],
@@ -168,14 +155,14 @@ List<Perak> daftarPerak = [
         "Cincin perak Brilliant dirancang untuk Anda yang menyukai kesederhanaan dengan sentuhan elegan. "
         "Awet, nyaman dipakai, dan cocok untuk berbagai gaya mulai dari kasual hingga semi-formal.",
 
-    specs: [
+    specification: [
       "Material: Perak Murni 925 (Sterling Silver)",
       "Warna: Silver Natural Berkilau",
       "Finishing: Halus, Presisi, Anti Kusam",
       "Kategori: Fashion Jewelry & Daily Wear",
     ],
 
-    variations: {
+    variation: {
       "Ukuran": ["10", "12", "14", "16", "18"],
       "Berat": ["2 gr", "3 gr", "5 gr"],
       "Model": [

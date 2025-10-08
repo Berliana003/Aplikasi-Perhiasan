@@ -30,6 +30,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     final product = widget.product;
 
+    final formatCurrency = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+
     // hitung estimasi tanggal tiba
     final estimatedDate = DateTime.now().add(
       Duration(days: product.deliveryDays),
@@ -109,10 +115,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Cek apakah produk punya variasi
-                  if (product.variations != null &&
-                      product.variations!.isNotEmpty) {
+                  if (product.variation != null &&
+                      product.variation!.isNotEmpty) {
                     // Cek apakah semua kategori sudah dipilih
-                    bool semuaDipilih = product.variations!.keys.every(
+                    bool semuaDipilih = product.variation!.keys.every(
                       (kategori) => selectedVariations.containsKey(kategori),
                     );
 
@@ -281,7 +287,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Rp ${(product.getFinalPrice()).toStringAsFixed(0)}",
+                        formatCurrency.format(product.getFinalPrice()),
                         style: const TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -291,7 +297,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       const SizedBox(width: 8),
                       if (product.diskon > 0) ...[
                         Text(
-                          "Rp ${product.price.toStringAsFixed(0)}",
+                          formatCurrency.format(product.price),
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.grey,
@@ -432,7 +438,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
 
             // Spesifikasi
-            if (product.specs != null && product.specs!.isNotEmpty)
+            if (product.specification != null &&
+                product.specification!.isNotEmpty)
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.only(top: 8),
@@ -449,7 +456,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ...product.specs!.map(
+                    ...product.specification!.map(
                       (s) => Padding(
                         padding: const EdgeInsets.only(bottom: 4),
                         child: Text(
@@ -466,7 +473,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
 
             // Variasi
-            if (product.variations != null && product.variations!.isNotEmpty)
+            if (product.variation != null && product.variation!.isNotEmpty)
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.only(top: 8),
@@ -485,7 +492,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     const SizedBox(height: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: product.variations!.entries.map((entry) {
+                      children: product.variation!.entries.map((entry) {
                         String kategori = entry.key;
                         List<String> opsi = entry.value;
 

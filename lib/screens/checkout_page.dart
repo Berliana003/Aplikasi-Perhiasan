@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/order.dart';
 import 'package:flutter_application_1/models/order_history.dart';
 import 'package:flutter_application_1/models/cart_item.dart';
+import 'package:intl/intl.dart';
 
 class CheckoutPage extends StatefulWidget {
   final List<CartItem> items;
@@ -25,7 +26,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    // hitung subtotal semua produk terpilih
+    final formatCurrency = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+
     double subtotal = widget.items.fold(
       0,
       (sum, item) => sum + (item.product.getFinalPrice() * item.quantity),
@@ -83,7 +89,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             Text("Stok tersisa: ${product.stock}"),
                             Text("Estimasi tiba: ${product.deliveryDays} hari"),
                             Text(
-                              "Rp ${(product.getFinalPrice() * item.quantity).toStringAsFixed(0)}",
+                              formatCurrency.format(
+                                product.getFinalPrice() * item.quantity,
+                              ),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.red,
@@ -165,14 +173,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Subtotal"),
-                Text("Rp ${subtotal.toStringAsFixed(0)}"),
+                Text(formatCurrency.format(subtotal)),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Ongkos Kirim"),
-                Text("Rp ${shipping.toStringAsFixed(0)}"),
+                Text(formatCurrency.format(shipping)),
               ],
             ),
             const SizedBox(height: 8),
@@ -184,7 +192,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
-                  "Rp ${total.toStringAsFixed(0)}",
+                  formatCurrency.format(total),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -258,7 +266,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     builder: (ctx) => AlertDialog(
                       title: const Text("Berhasil Checkout"),
                       content: Text(
-                        "Pesanan Anda sudah dibuat.\nTotal: Rp ${total.toStringAsFixed(0)}",
+                        "Pesanan Anda sudah dibuat.\nTotal: ${formatCurrency.format(total)}",
                       ),
                       actions: [
                         TextButton(

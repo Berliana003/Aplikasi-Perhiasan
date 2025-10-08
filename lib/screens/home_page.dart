@@ -1,5 +1,7 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/screens/address_page.dart';
 import 'package:flutter_application_1/screens/cart_page.dart';
 import 'package:flutter_application_1/screens/login_page.dart';
 import 'package:flutter_application_1/models/emas.dart';
@@ -7,9 +9,13 @@ import 'package:flutter_application_1/models/perak.dart';
 import 'package:flutter_application_1/models/berlian.dart';
 import 'package:flutter_application_1/models/product.dart';
 import 'package:flutter_application_1/screens/notification_page.dart';
+import 'package:flutter_application_1/screens/order_history_page.dart';
+import 'package:flutter_application_1/screens/privacy_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
+import 'package:flutter_application_1/screens/security_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'category_page.dart';
+import 'dart:io';
 
 class Category {
   final String name;
@@ -35,6 +41,32 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
   String _selectedFilter = "All";
+  String _deviceInfo = "Memuat info perangkat...";
+
+  @override
+  void initState() {
+    super.initState();
+    _getDeviceInfo();
+    _allProducts = [...daftarEmas, ...daftarPerak, ...daftarBerlian];
+    _filteredProducts = List.from(_allProducts);
+  }
+
+  Future<void> _getDeviceInfo() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    String info = "Tidak diketahui";
+
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfoPlugin.androidInfo;
+      info = "${androidInfo.manufacturer} ${androidInfo.model}";
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfoPlugin.iosInfo;
+      info = "${iosInfo.name} (${iosInfo.systemVersion})";
+    }
+
+    setState(() {
+      _deviceInfo = info;
+    });
+  }
 
   List<Category> categories = [
     Category(name: "Emas", icon: Icons.circle, products: daftarEmas),
@@ -48,13 +80,6 @@ class _HomePageState extends State<HomePage> {
     "Harga Termurah",
     "Trending",
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _allProducts = [...daftarEmas, ...daftarPerak, ...daftarBerlian];
-    _filteredProducts = List.from(_allProducts);
-  }
 
   void _applyFilters() {
     setState(() {
@@ -222,6 +247,124 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _showSettingsModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // biar bisa tinggi penuh jika perlu
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            height:
+                MediaQuery.of(context).size.height * 0.6, // 60% tinggi layar
+            child: Column(
+              children: [
+                // Header modal
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Pengaturan",
+                      style: GoogleFonts.youngSerif(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const Divider(),
+
+                // List menu
+                Expanded(
+                  child: ListView(
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.info,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: const Text("Info Perangkat"),
+                        subtitle: Text(
+                          _deviceInfo,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Divider(color: Colors.grey[300]),
+                      ListTile(
+                        leading: Icon(Icons.history, color: Colors.green[400]),
+                        title: const Text("Riwayat Checkout"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const OrderHistoryPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      Divider(color: Colors.grey[300]),
+                      ListTile(
+                        leading: const Icon(Icons.lock, color: Colors.orange),
+                        title: const Text("Keamanan & Login"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SecurityPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      Divider(color: Colors.grey[300]),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.location_on,
+                          color: Colors.blue,
+                        ),
+                        title: const Text("Alamat & Pengiriman"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AddressPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      Divider(color: Colors.grey[300]),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.privacy_tip,
+                          color: Colors.purple,
+                        ),
+                        title: const Text("Privasi & Akun"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PrivacyPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,6 +372,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D47A1),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.settings, color: Colors.white),
+          onPressed: _showSettingsModal,
+        ),
         title: Text(
           "Home",
           style: GoogleFonts.youngSerif(

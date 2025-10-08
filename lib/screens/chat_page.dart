@@ -1,49 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, String>> activeUsers = [
-      {"name": "Deffan", "avatar": "assets/image/pp1.jpg"},
-      {"name": "Raka", "avatar": "assets/image/pp2.jpg"},
-      {"name": "Rangga", "avatar": "assets/image/pp3.jpg"},
-      {"name": "Sasya", "avatar": "assets/image/pp4.jpg"},
-    ];
+  State<ChatPage> createState() => _ChatPageState();
+}
 
-    final List<Map<String, String>> messages = [
-      {
-        "name": "Deffan",
-        "message": "Apakah cincin emas ini masih tersedia?",
-        "time": "5m ago",
-        "avatar": "assets/image/pp1.jpg",
-      },
-      {
-        "name": "Raka",
-        "message": "Kapan kalung saya dikirim?",
-        "time": "10m ago",
-        "avatar": "assets/image/pp2.jpg",
-      },
-      {
-        "name": "Rangga",
-        "message": "Apakah ada diskon untuk gelang perak?",
-        "time": "1h ago",
-        "avatar": "assets/image/pp3.jpg",
-      },
-      {
-        "name": "Sasya",
-        "message": "Saya ingin retur anting emas.",
-        "time": "2h ago",
-        "avatar": "assets/image/pp4.jpg",
-      },
-    ];
+class _ChatPageState extends State<ChatPage> {
+  final ScrollController _scrollController = ScrollController();
+  String query = "";
+
+  final List<Map<String, String>> activeUsers = [
+    {"name": "Deffan", "avatar": "assets/image/pp1.jpg"},
+    {"name": "Raka", "avatar": "assets/image/pp2.jpg"},
+    {"name": "Rangga", "avatar": "assets/image/pp3.jpg"},
+    {"name": "Sasya", "avatar": "assets/image/pp4.jpg"},
+  ];
+
+  final List<Map<String, String>> messages = [
+    {
+      "name": "Deffan",
+      "message": "Apakah cincin emas ini masih tersedia?",
+      "time": "5m ago",
+      "avatar": "assets/image/pp1.jpg",
+    },
+    {
+      "name": "Raka",
+      "message": "Kapan kalung saya dikirim?",
+      "time": "10m ago",
+      "avatar": "assets/image/pp2.jpg",
+    },
+    {
+      "name": "Rangga",
+      "message": "Apakah ada diskon untuk gelang perak?",
+      "time": "1h ago",
+      "avatar": "assets/image/pp3.jpg",
+    },
+    {
+      "name": "Sasya",
+      "message": "Saya ingin retur anting emas.",
+      "time": "2h ago",
+      "avatar": "assets/image/pp4.jpg",
+    },
+  ];
+
+  void _updateQuery(String val) {
+    setState(() {
+      query = val;
+    });
+    // Scroll ke paling atas tiap kali query berubah
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Filter messages berdasarkan query
+    List<Map<String, String>> filteredMessages = List.from(messages);
+    // Jika query tidak kosong, urutkan agar yang mengandung query muncul di atas
+    if (query.isNotEmpty) {
+      filteredMessages.sort((a, b) {
+        final aName = a["name"]!.toLowerCase();
+        final bName = b["name"]!.toLowerCase();
+        final q = query.toLowerCase();
+
+        final aMatch = aName.contains(q);
+        final bMatch = bName.contains(q);
+
+        // Jika hanya satu yang cocok, dia di atas
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+
+        // Kalau dua-duanya cocok, urutkan berdasarkan posisi kecocokan (lebih awal = lebih atas)
+        if (aMatch && bMatch) {
+          return aName.indexOf(q).compareTo(bName.indexOf(q));
+        }
+
+        return 0;
+      });
+    }
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: GFAppBar(
         backgroundColor: const Color(0xFF0D47A1),
-        elevation: 0,
-        leading: IconButton(
+        centerTitle: true,
+        leading: GFIconButton(
+          type: GFButtonType.transparent,
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
@@ -51,7 +100,6 @@ class ChatPage extends StatelessWidget {
           "Chat",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -59,19 +107,23 @@ class ChatPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search Bar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: "Cari Customer...",
-                  border: InputBorder.none,
-                  icon: Icon(Icons.search, color: Colors.grey),
-                ),
-              ),
+            GFSearchBar(
+              searchList: messages.map((m) => m["name"]!).toList(),
+              searchQueryBuilder: (query, list) {
+                return list
+                    .where(
+                      (item) =>
+                          item.toLowerCase().contains(query.toLowerCase()),
+                    )
+                    .toList();
+              },
+              overlaySearchListItemBuilder: (String? item) {
+                return ListTile(title: Text(item ?? ""));
+              },
+              onItemSelected: (String? item) {
+                if (item != null) _updateQuery(item);
+              },
+              hideSearchBoxWhenItemSelected: false,
             ),
             const SizedBox(height: 20),
 
@@ -82,7 +134,7 @@ class ChatPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 90,
+              height: 100,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: activeUsers.length,
@@ -90,27 +142,23 @@ class ChatPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final user = activeUsers[index];
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundImage: AssetImage(user["avatar"]!),
-                          ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              width: 12,
-                              height: 12,
-                              decoration: const BoxDecoration(
-                                color: Colors.green,
-                                shape: BoxShape.circle,
-                              ),
+                      GFAvatar(
+                        backgroundImage: AssetImage(user["avatar"]!),
+                        shape: GFAvatarShape.circle,
+                        size: GFSize.LARGE,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            width: 12,
+                            height: 12,
+                            decoration: const BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -133,47 +181,26 @@ class ChatPage extends StatelessWidget {
             const SizedBox(height: 12),
             Expanded(
               child: ListView.separated(
-                itemCount: messages.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                controller: _scrollController,
+                itemCount: filteredMessages.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final msg = messages[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                  final msg = filteredMessages[index];
+                  return GFListTile(
+                    avatar: GFAvatar(
+                      backgroundImage: AssetImage(msg["avatar"]!),
+                      shape: GFAvatarShape.circle,
+                      size: GFSize.MEDIUM,
                     ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 28,
-                        backgroundImage: AssetImage(msg["avatar"]!),
-                      ),
-                      title: Text(
-                        msg["name"]!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      subtitle: Text(
-                        msg["message"]!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Text(
-                        msg["time"]!,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
+                    titleText: msg["name"]!,
+                    subTitleText: msg["message"]!,
+                    icon: Text(
+                      msg["time"]!,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
+                    color: Colors.white,
+                    margin: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(8),
                   );
                 },
               ),

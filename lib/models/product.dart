@@ -11,8 +11,8 @@ class Product {
   int _stock;
   int _deliveryDays;
   String? _description;
-  List<String>? _specs;
-  Map<String, List<String>>? _variations;
+  List<String>? _specification;
+  Map<String, List<String>>? _variation;
   Uint8List? _imageBytes;
 
   Product({
@@ -26,8 +26,8 @@ class Product {
     required int stock,
     required int deliveryDays,
     String? description,
-    List<String>? specs,
-    Map<String, List<String>>? variations,
+    List<String>? specification,
+    Map<String, List<String>>? variation,
     Uint8List? imageBytes,
   }) : _id = id,
        _name = name,
@@ -39,8 +39,8 @@ class Product {
        _stock = stock,
        _deliveryDays = deliveryDays,
        _description = description,
-       _specs = specs,
-       _variations = variations,
+       _specification = specification,
+       _variation = variation,
        _imageBytes = imageBytes;
 
   // Getter
@@ -54,12 +54,15 @@ class Product {
   int get stock => _stock;
   int get deliveryDays => _deliveryDays;
   String? get description => _description;
-  List<String>? get specs => _specs;
-  Map<String, List<String>>? get variations => _variations;
+  List<String>? get specification => _specification;
+  Map<String, List<String>>? get variation => _variation;
   Uint8List? get imageBytes => _imageBytes;
 
   // Setter
-  set name(String value) => _name = value;
+  set name(String value) {
+    if (value.isEmpty) throw Exception("Nama produk tidak boleh kosong");
+    _name = value;
+  }
 
   set price(double value) {
     if (value < 0) throw ArgumentError("Harga tidak boleh negatif!");
@@ -74,8 +77,17 @@ class Product {
   }
 
   set image(String value) => _image = value;
-  set rating(double value) => _rating = value;
-  set sold(int value) => _sold = value;
+  set rating(double value) {
+    if (value < 0 || value > 5) {
+      throw ArgumentError("Rating harus antara 0–5");
+    }
+    _rating = value;
+  }
+
+  set sold(int value) {
+    if (value < 0) throw ArgumentError("Jumlah terjual tidak boleh negatif!");
+    _sold = value;
+  }
 
   set stock(int value) {
     if (value < 0) throw ArgumentError("Stok tidak boleh negatif!");
@@ -88,8 +100,8 @@ class Product {
   }
 
   set description(String? value) => _description = value;
-  set specs(List<String>? value) => _specs = value;
-  set variations(Map<String, List<String>>? value) => _variations = value;
+  set specification(List<String>? value) => _specification = value;
+  set variation(Map<String, List<String>>? value) => _variation = value;
   set imageBytes(Uint8List? value) => _imageBytes = value;
 
   /// Hitung harga setelah diskon
@@ -109,7 +121,7 @@ class Product {
 
   /// Ubah diskon otomatis jika produk tidak laku
   void applyClearanceSale() {
-    if (_sold < 10) {
+    if (_sold < 10 && _stock > 20) {
       _diskon = 50;
     }
   }

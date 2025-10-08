@@ -16,7 +16,7 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Login',
+      title: 'Dewi Berliana',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const SplashScreen(),
     );

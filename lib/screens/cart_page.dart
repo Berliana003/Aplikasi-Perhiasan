@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/category_page.dart';
 import 'package:flutter_application_1/screens/checkout_page.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -12,6 +13,16 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   Set<int> selectedItems = {};
+
+  // Fungsi helper untuk format rupiah
+  String _formatRupiah(double value) {
+    final formatCurrency = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatCurrency.format(value);
+  }
 
   void _increaseQuantity(int index) {
     setState(() {
@@ -160,7 +171,7 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      "Rp ${product.getFinalPrice().toStringAsFixed(0)}",
+                                      _formatRupiah(product.getFinalPrice()),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
@@ -227,7 +238,7 @@ class _CartPageState extends State<CartPage> {
                           Text("Total (${selectedItems.length} item)"),
                           const SizedBox(height: 4),
                           Text(
-                            "Rp ${_calculateTotal().toStringAsFixed(0)}",
+                            _formatRupiah(_calculateTotal()),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

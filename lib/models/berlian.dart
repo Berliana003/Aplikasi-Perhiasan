@@ -2,32 +2,19 @@ import 'product.dart';
 
 class Berlian extends Product {
   Berlian({
-    required String id,
-    required String name,
-    required double diskon,
-    required double price,
-    required String image,
-    required double rating,
-    required int sold,
-    required int stock,
-    required int deliveryDays,
-    String? description,
-    List<String>? specs,
-    Map<String, List<String>>? variations,
-  }) : super(
-         id: id,
-         name: name,
-         diskon: diskon,
-         price: price,
-         image: image,
-         rating: rating,
-         sold: sold,
-         stock: stock,
-         deliveryDays: deliveryDays,
-         description: description,
-         specs: specs,
-         variations: variations,
-       );
+    required super.id,
+    required super.name,
+    required super.diskon,
+    required super.price,
+    required super.image,
+    required super.rating,
+    required super.sold,
+    required super.stock,
+    required super.deliveryDays,
+    required super.description,
+    required super.specification,
+    required super.variation,
+  });
 
   // Getter
   // Mengambil harga setelah diskon
@@ -99,14 +86,14 @@ List<Berlian> daftarBerlian = [
         "Kalung Berlian Brilliant bukan hanya perhiasan, melainkan warisan kemewahan yang bernilai tinggi "
         "serta simbol cinta yang tak lekang oleh waktu.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli + Berlian Murni (sertifikat keaslian disertakan)",
       "Warna: Emas Kuning / Emas Putih",
       "Finishing: Presisi & Premium",
       "Kategori: Fine Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Panjang Kalung": ["40 cm", "45 cm", "50 cm"],
       "Desain": [
@@ -136,14 +123,14 @@ List<Berlian> daftarBerlian = [
         "Cincin Berlian Brilliant bukan sekadar perhiasan, melainkan simbol cinta sejati "
         "yang akan selalu bersinar sepanjang masa.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli + Berlian Murni (sertifikat keaslian disertakan)",
       "Warna: Emas Putih / Emas Kuning",
       "Potongan Berlian: Round Cut | Princess Cut | Oval | Cushion",
       "Kategori: Engagement Ring & Fine Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Karat Berlian": ["0.10 ct", "0.25 ct", "0.50 ct"],
       "Berat Emas": ["2 gr", "3 gr", "5 gr"],
       "Model": ["Solitaire", "Three-Stone", "Halo", "Eternity"],
@@ -167,14 +154,14 @@ List<Berlian> daftarBerlian = [
         "Gelang Berlian Brilliant adalah simbol keanggunan dan prestise, pilihan sempurna untuk hadiah berharga "
         "maupun koleksi pribadi yang bernilai tinggi.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli + Berlian Murni (dilengkapi sertifikat keaslian)",
       "Warna: Emas Putih / Emas Kuning",
       "Finishing: Presisi, Nyaman Dipakai",
       "Kategori: Fine Jewelry & Luxury Collection",
     ],
 
-    variations: {
+    variation: {
       "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Panjang Gelang": ["16 cm", "18 cm", "20 cm"],
       "Model": ["Tennis Bracelet", "Charm Diamond", "Classic Chain"],
@@ -199,14 +186,14 @@ List<Berlian> daftarBerlian = [
         "perhiasan istimewa yang memadukan kenyamanan dengan kemewahan, menjadikannya "
         "pilihan sempurna untuk hadiah berkelas maupun koleksi pribadi.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli + Berlian Murni (sertifikat keaslian disertakan)",
       "Warna: Emas Putih / Emas Kuning",
       "Desain: Ringan, Elegan, & Modern",
       "Kategori: Luxury Daily Wear & Fine Jewelry",
     ],
 
-    variations: {
+    variation: {
       "Bentuk": ["Stud", "Hoop", "Drop", "Cluster"],
       "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Detail": ["Polos", "Solitaire", "Halo Design"],

@@ -12,6 +12,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_application_1/screens/product_detail_page.dart';
+import 'package:intl/intl.dart';
 
 List<CartItem> cartItems = [];
 
@@ -32,6 +33,15 @@ class _CategoryPageState extends State<CategoryPage> {
   String _searchQuery = "";
   String _selectedFilter = "All";
   int _selectedIndex = 0;
+
+  String formatRupiah(double amount) {
+    final formatCurrency = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatCurrency.format(amount);
+  }
 
   void _applyFilters() {
     setState(() {
@@ -75,6 +85,9 @@ class _CategoryPageState extends State<CategoryPage> {
     final diskonController = TextEditingController();
     final ratingController = TextEditingController();
     final soldController = TextEditingController();
+    final descriptionController = TextEditingController();
+    final specificationController = TextEditingController();
+    final variationController = TextEditingController();
 
     String? imagePath;
     Uint8List? imageBytes;
@@ -116,6 +129,40 @@ class _CategoryPageState extends State<CategoryPage> {
                       controller: soldController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(labelText: "Terjual"),
+                    ),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: const InputDecoration(
+                        labelText: "Deskripsi Produk",
+                      ),
+                      maxLines: 3,
+                    ),
+                    TextField(
+                      controller: specificationController,
+                      decoration: const InputDecoration(
+                        labelText: "Spesifikasi Produk (pisahkan dengan koma)",
+                      ),
+                      maxLines: 2,
+                    ),
+                    TextField(
+                      controller: variationController,
+                      decoration: const InputDecoration(
+                        labelText:
+                            "Variasi (contoh: Warna: Merah, Biru; Ukuran: S, M, L)",
+                      ),
+                      maxLines: 2,
+                    ),
+                    TextField(
+                      controller: stockController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: "Stok"),
+                    ),
+                    TextField(
+                      controller: deliveryDaysController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: "Estimasi Pengiriman (hari)",
+                      ),
                     ),
 
                     const SizedBox(height: 12),
@@ -165,6 +212,26 @@ class _CategoryPageState extends State<CategoryPage> {
                 ElevatedButton(
                   child: const Text("Simpan"),
                   onPressed: () {
+                    List<String> specification = specificationController.text
+                        .split(',')
+                        .map((e) => e.trim())
+                        .where((e) => e.isNotEmpty)
+                        .toList();
+
+                    Map<String, List<String>> variation = {};
+                    for (var section in variationController.text.split(';')) {
+                      if (section.contains(':')) {
+                        var parts = section.split(':');
+                        String key = parts[0].trim();
+                        List<String> values = parts[1]
+                            .split(',')
+                            .map((v) => v.trim())
+                            .where((v) => v.isNotEmpty)
+                            .toList();
+                        variation[key] = values;
+                      }
+                    }
+
                     final newProduct = Product(
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
                       name: nameController.text,
@@ -177,6 +244,9 @@ class _CategoryPageState extends State<CategoryPage> {
                           int.tryParse(deliveryDaysController.text) ?? 0,
                       image: imagePath ?? "",
                       imageBytes: imageBytes,
+                      description: descriptionController.text,
+                      specification: specification,
+                      variation: variation,
                     );
 
                     setState(() {
@@ -207,6 +277,19 @@ class _CategoryPageState extends State<CategoryPage> {
       text: product.rating.toString(),
     );
     final soldController = TextEditingController(text: product.sold.toString());
+    final descriptionController = TextEditingController(
+      text: product.description,
+    );
+    final specificationController = TextEditingController(
+      text: product.specification?.join(', ') ?? '',
+    );
+    final variationController = TextEditingController(
+      text: product.variation != null
+          ? product.variation!.entries
+                .map((e) => "${e.key}: ${e.value.join(', ')}")
+                .join('; ')
+          : '',
+    );
 
     String? imagePath = product.image.isNotEmpty ? product.image : null;
     Uint8List? imageBytes = product.imageBytes;
@@ -249,7 +332,28 @@ class _CategoryPageState extends State<CategoryPage> {
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(labelText: "Terjual"),
                     ),
-
+                    TextField(
+                      controller: descriptionController,
+                      decoration: const InputDecoration(
+                        labelText: "Deskripsi Produk",
+                      ),
+                      maxLines: 3,
+                    ),
+                    TextField(
+                      controller: specificationController,
+                      decoration: const InputDecoration(
+                        labelText: "Spesifikasi (pisahkan dengan koma)",
+                      ),
+                      maxLines: 2,
+                    ),
+                    TextField(
+                      controller: variationController,
+                      decoration: const InputDecoration(
+                        labelText:
+                            "Variasi (contoh: Warna: Merah, Biru; Ukuran: S, M, L)",
+                      ),
+                      maxLines: 2,
+                    ),
                     const SizedBox(height: 12),
 
                     // Preview gambar
@@ -310,6 +414,27 @@ class _CategoryPageState extends State<CategoryPage> {
                       product.sold = int.tryParse(soldController.text) ?? 0;
                       product.image = imagePath ?? "";
                       product.imageBytes = imageBytes;
+                      product.description = descriptionController.text;
+                      product.specification = specificationController.text
+                          .split(',')
+                          .map((e) => e.trim())
+                          .where((e) => e.isNotEmpty)
+                          .toList();
+
+                      Map<String, List<String>> variations = {};
+                      for (var section in variationController.text.split(';')) {
+                        if (section.contains(':')) {
+                          var parts = section.split(':');
+                          String key = parts[0].trim();
+                          List<String> values = parts[1]
+                              .split(',')
+                              .map((v) => v.trim())
+                              .where((v) => v.isNotEmpty)
+                              .toList();
+                          variations[key] = values;
+                        }
+                      }
+                      product.variation = variations;
                     });
 
                     Navigator.pop(context);
@@ -545,7 +670,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
                             // Harga
                             Text(
-                              "Rp ${p.price.toStringAsFixed(0)}",
+                              formatRupiah(p.price),
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -555,7 +680,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
                             // Diskon
                             Text(
-                              "Diskon ${p.diskon}%",
+                              "Diskon ${p.diskon.toStringAsFixed(0)}%",
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,

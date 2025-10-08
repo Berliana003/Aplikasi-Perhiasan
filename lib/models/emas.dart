@@ -2,32 +2,19 @@ import 'product.dart';
 
 class Emas extends Product {
   Emas({
-    required String id,
-    required String name,
-    required double diskon,
-    required double price,
-    required String image,
-    required double rating,
-    required int sold,
-    required int stock,
-    required int deliveryDays,
-    String? description,
-    List<String>? specs,
-    Map<String, List<String>>? variations,
-  }) : super(
-         id: id,
-         name: name,
-         diskon: diskon,
-         price: price,
-         image: image,
-         rating: rating,
-         sold: sold,
-         stock: stock,
-         deliveryDays: deliveryDays,
-         description: description,
-         specs: specs,
-         variations: variations,
-       );
+    required super.id,
+    required super.name,
+    required super.diskon,
+    required super.price,
+    required super.image,
+    required super.rating,
+    required super.sold,
+    required super.stock,
+    required super.deliveryDays,
+    super.description,
+    super.specification,
+    super.variation,
+  });
 
   // Getter
   // Hitung harga setelah diskon
@@ -97,14 +84,14 @@ List<Emas> daftarEmas = [
         "Kilau mewahnya tahan lama dan cocok digunakan untuk acara formal maupun sehari-hari. "
         "Dibuat dengan detail presisi dan finishing yang halus, kalung emas Brilliant memberikan sentuhan kemewahan pada setiap penampilan Anda.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli (dengan sertifikat keaslian)",
       "Warna: Emas Kuning Berkilau",
       "Desain: Simple & Elegan",
       "Cocok untuk: Hadiah, koleksi pribadi, maupun investasi",
     ],
 
-    variations: {
+    variation: {
       "Panjang": ["40 cm", "45 cm", "50 cm"],
       "Berat": ["2 gram", "3 gram", "5 gram"],
       "Model": ["Rantai Polos", "Rantai Box", "Rantai Tali (Rope)"],
@@ -127,14 +114,14 @@ List<Emas> daftarEmas = [
         "mulai dari pertunangan, pernikahan, hingga hadiah istimewa. Dengan detail presisi dan finishing halus, "
         "cincin emas Brilliant menjadi simbol keindahan, cinta, dan nilai investasi jangka panjang.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli (dengan sertifikat keaslian)",
       "Warna: Emas Kuning Berkilau",
       "Desain: Minimalis & Elegan",
       "Cocok untuk: Pernikahan, pertunangan, hadiah, maupun koleksi pribadi",
     ],
 
-    variations: {
+    variation: {
       "Berat": ["2 gram", "3 gram", "5 gram"],
       "Ukuran": ["10", "12", "14", "16", "18"],
       "Model": ["Polos", "Bermotif", "Berhias Zircon/Permata"],
@@ -157,14 +144,14 @@ List<Emas> daftarEmas = [
         "Ringan, nyaman, dan tahan lama, cocok dipakai sehari-hari maupun melengkapi gaya di acara spesial. "
         "Gelang Emas Brilliant tidak hanya mempercantik penampilan, tetapi juga menghadirkan kesan elegan yang bertahan sepanjang waktu.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli (sertifikat keaslian disertakan)",
       "Warna: Emas Kuning Berkilau",
       "Finishing: Halus & Presisi",
       "Kategori: Fashion Jewelry sekaligus Investasi",
     ],
 
-    variations: {
+    variation: {
       "Panjang": ["16 cm", "18 cm", "20 cm"],
       "Berat": ["3 gr", "5 gr", "7 gr"],
       "Model": ["Rantai Klasik", "Box Chain", "Rope Chain", "Gelang Charm"],
@@ -188,14 +175,14 @@ List<Emas> daftarEmas = [
         "Dengan desain menawan yang menyesuaikan gaya modern maupun klasik, "
         "Anting Emas Brilliant menjadi pilihan sempurna untuk melengkapi koleksi perhiasan Anda.",
 
-    specs: [
+    specification: [
       "Material: Emas Asli (dilengkapi sertifikat keaslian)",
       "Warna: Emas Kuning Mengkilap",
       "Desain: Ringan, Nyaman, & Stylish",
       "Kategori: Daily Wear & Special Occasion",
     ],
 
-    variations: {
+    variation: {
       "Bentuk": ["Stud", "Hoop", "Drop", "Twist"],
       "Berat": ["1 gr", "2 gr", "3 gr"],
       "Detail": ["Polos", "Bermotif", "Berhias Zircon/Permata"],

@@ -8,6 +8,11 @@ class OrderHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final orders = OrderHistory.orders;
+    final formatCurrency = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp',
+      decimalDigits: 0,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +43,13 @@ class OrderHistoryPage extends StatelessWidget {
                       children: [
                         Text("Jumlah: ${order.quantity}"),
                         Text("Metode: ${order.paymentMethod}"),
-                        Text("Total: Rp ${order.total.toStringAsFixed(0)}"),
+                        Text(
+                          "Total: ${formatCurrency.format(order.total)}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
                         Text(
                           "Tanggal: ${DateFormat('dd/MM/yyyy HH:mm').format(order.date)}",
                           style: const TextStyle(
