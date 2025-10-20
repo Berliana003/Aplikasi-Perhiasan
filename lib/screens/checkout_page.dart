@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/order.dart';
 import 'package:flutter_application_1/models/order_history.dart';
 import 'package:flutter_application_1/models/cart_item.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'address_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   final List<CartItem> items;
@@ -14,7 +17,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  String address = "";
+  String? selectedAddress;
   String selectedPayment = "Transfer Bank";
 
   final List<String> paymentMethods = [
@@ -23,6 +26,30 @@ class _CheckoutPageState extends State<CheckoutPage> {
     "COD (Bayar di Tempat)",
     "Kartu Kredit/Debit",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSelectedAddress();
+  }
+
+  /// Ambil alamat terakhir yang disimpan di SharedPreferences
+  Future<void> _loadSelectedAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final address = prefs.getString('selected_address');
+    setState(() {
+      selectedAddress = address;
+    });
+  }
+
+  // Navigasi ke halaman pilih alamat
+  Future<void> _chooseAddress() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AddressPage()),
+    );
+    _loadSelectedAddress(); // refresh setelah kembali
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +66,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
     double shipping = 20000;
     double total = subtotal + shipping;
 
+    // Format alamat
+    final addressParts = selectedAddress?.split('|') ?? [];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D47A1),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        title: Text(
           "Checkout",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: GoogleFonts.cinzel(
+            fontSize: 30,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -54,7 +88,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Informasi Produk (bisa 1 atau banyak)
+            // Daftar Produk
             ...widget.items.map((item) {
               final product = item.product;
               return Column(
@@ -80,21 +114,31 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           children: [
                             Text(
                               product.name,
-                              style: const TextStyle(
+                              style: GoogleFonts.youngSerif(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text("Jumlah: ${item.quantity}"),
-                            Text("Stok tersisa: ${product.stock}"),
-                            Text("Estimasi tiba: ${product.deliveryDays} hari"),
+                            Text(
+                              "Jumlah: ${item.quantity}",
+                              style: GoogleFonts.arvo(fontSize: 14),
+                            ),
+                            Text(
+                              "Stok tersisa: ${product.stock}",
+                              style: GoogleFonts.arvo(fontSize: 14),
+                            ),
+                            Text(
+                              "Estimasi tiba: ${product.deliveryDays} hari",
+                              style: GoogleFonts.arvo(fontSize: 14),
+                            ),
                             Text(
                               formatCurrency.format(
                                 product.getFinalPrice() * item.quantity,
                               ),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.arvo(
+                                fontSize: 14,
                                 color: Colors.red,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -109,7 +153,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: item.selectedVariations!.entries
-                            .map((e) => Text("${e.key}: ${e.value}"))
+                            .map(
+                              (e) => Text(
+                                "${e.key}: ${e.value}",
+                                style: GoogleFonts.arvo(fontSize: 14),
+                              ),
+                            )
                             .toList(),
                       ),
                     ),
@@ -120,36 +169,82 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             const SizedBox(height: 10),
 
-            // Alamat
-            const Text(
+            // Alamat Pengiriman
+            Text(
               "Alamat Pengiriman",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              onChanged: (val) => setState(() => address = val),
-              maxLines: 2,
-              decoration: InputDecoration(
-                hintText: "Masukkan alamat lengkap...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+              style: GoogleFonts.patuaOne(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 8),
+
+            if (selectedAddress != null && selectedAddress!.isNotEmpty)
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.location_on,
+                    color: Colors.blueAccent,
+                  ),
+                  title: Text(
+                    addressParts.isNotEmpty ? addressParts[0] : "",
+                    style: GoogleFonts.arvo(fontSize: 14),
+                  ),
+                  subtitle: Text(
+                    addressParts.length > 1
+                        ? addressParts.sublist(1).join("\n")
+                        : "",
+                    style: GoogleFonts.arvo(fontSize: 14),
+                  ),
+                  trailing: TextButton(
+                    onPressed: _chooseAddress,
+                    child: Text("Ubah", style: GoogleFonts.arvo(fontSize: 14)),
+                  ),
+                ),
+              )
+            else
+              ElevatedButton.icon(
+                onPressed: _chooseAddress,
+                icon: const Icon(Icons.add_location_alt),
+                label: Text(
+                  "Pilih Alamat Pengiriman",
+                  style: GoogleFonts.arvo(fontSize: 14),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[800],
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
             const SizedBox(height: 16),
 
             // Metode Pembayaran
-            const Text(
+            Text(
               "Metode Pembayaran",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: GoogleFonts.patuaOne(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: selectedPayment,
               items: paymentMethods
                   .map(
-                    (method) =>
-                        DropdownMenuItem(value: method, child: Text(method)),
+                    (method) => DropdownMenuItem(
+                      value: method,
+                      child: Text(
+                        method,
+                        style: GoogleFonts.arvo(fontSize: 14),
+                      ),
+                    ),
                   )
                   .toList(),
               onChanged: (val) {
@@ -163,39 +258,51 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             const Divider(height: 32),
 
-            // Rincian
-            const Text(
+            // Rincian Pembayaran
+            Text(
               "Rincian Pembayaran",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: GoogleFonts.patuaOne(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Subtotal"),
-                Text(formatCurrency.format(subtotal)),
+                Text("Subtotal", style: GoogleFonts.arvo(fontSize: 14)),
+                Text(
+                  formatCurrency.format(subtotal),
+                  style: GoogleFonts.arvo(fontSize: 14),
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Ongkos Kirim"),
-                Text(formatCurrency.format(shipping)),
+                Text("Ongkos Kirim", style: GoogleFonts.arvo(fontSize: 14)),
+                Text(
+                  formatCurrency.format(shipping),
+                  style: GoogleFonts.arvo(fontSize: 14),
+                ),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   "Total",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: GoogleFonts.patuaOne(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   formatCurrency.format(total),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.arvo(
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
@@ -203,15 +310,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             const SizedBox(height: 20),
 
-            // Garansi
             Row(
-              children: const [
+              children: [
                 Icon(Icons.verified, color: Colors.green),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     "Garansi Tiba: Pesanan dijamin sampai atau uang kembali.",
-                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                    style: GoogleFonts.arvo(fontSize: 14),
                   ),
                 ),
               ],
@@ -223,16 +329,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (address.isEmpty) {
+                  if (selectedAddress == null || selectedAddress!.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Harap isi alamat pengiriman!"),
+                        content: Text(
+                          "Harap pilih alamat pengiriman terlebih dahulu!",
+                        ),
                       ),
                     );
                     return;
                   }
 
-                  // Cek apakah ada produk yang belum pilih variasi
+                  // Validasi variasi produk
                   for (var item in widget.items) {
                     if (item.selectedVariations == null ||
                         item.selectedVariations!.isEmpty) {
@@ -243,16 +351,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           ),
                         ),
                       );
-                      return; // stop checkout
+                      return;
                     }
                   }
 
-                  // Kalau semua variasi sudah dipilih → simpan order
+                  // Simpan pesanan ke riwayat
                   for (var item in widget.items) {
                     final order = Order(
                       product: item.product,
                       quantity: item.quantity,
-                      address: address,
+                      address: selectedAddress!,
                       paymentMethod: selectedPayment,
                       total: item.product.getFinalPrice() * item.quantity,
                       date: DateTime.now(),
@@ -260,13 +368,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     OrderHistory.addOrder(order);
                   }
 
-                  // Munculkan dialog sukses
+                  // Dialog sukses
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
-                      title: const Text("Berhasil Checkout"),
+                      title: Text(
+                        "Berhasil Checkout",
+                        style: GoogleFonts.youngSerif(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       content: Text(
                         "Pesanan Anda sudah dibuat.\nTotal: ${formatCurrency.format(total)}",
+                        style: GoogleFonts.arvo(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
                       ),
                       actions: [
                         TextButton(
@@ -274,7 +392,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             Navigator.pop(ctx);
                             Navigator.pop(context);
                           },
-                          child: const Text("OK"),
+                          child: Text(
+                            "OK",
+                            style: GoogleFonts.cinzel(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -287,9 +412,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "Bayar Sekarang",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: GoogleFonts.cinzel(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

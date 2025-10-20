@@ -105,13 +105,13 @@ class _WelcomePageState extends State<WelcomePage>
                         children: [
                           Image.asset(
                             "assets/image/logo_berlian.png",
-                            height: 200,
+                            height: 150,
                           ),
                           const SizedBox(height: 1),
                           Text(
                             "Brilliant",
                             style: GoogleFonts.cinzel(
-                              fontSize: 50,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF0D47A1),
                             ),
@@ -145,7 +145,7 @@ class _WelcomePageState extends State<WelcomePage>
                         Text(
                           "Welcome",
                           style: GoogleFonts.youngSerif(
-                            fontSize: 35,
+                            fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF0D47A1),
                           ),
@@ -181,7 +181,7 @@ class _WelcomePageState extends State<WelcomePage>
                             child: Text(
                               "Sign In",
                               style: GoogleFonts.cinzel(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -216,7 +216,7 @@ class _WelcomePageState extends State<WelcomePage>
                             child: Text(
                               "Sign Up",
                               style: GoogleFonts.cinzel(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF0D47A1),
                               ),

@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Data dummy notifikasi
-    final List<Map<String, dynamic>> notifications = [
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> notifications = [];
+  List<Map<String, dynamic>> filteredNotifications = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Data dummy
+    notifications = [
       {
         "name": "Sistem Toko",
         "message":
@@ -96,21 +108,99 @@ class NotificationPage extends StatelessWidget {
       {
         "name": "Saldo",
         "message":
-            "Dana dari pesanan #INV123456 sebesar Rp250.000 sudah masuk ke saldo Anda.",
+            "Dana dari pesanan #INV123456 sebesar Rp525.000 sudah masuk ke saldo Anda.",
         "time": "1 day ago",
         "highlight": true,
         "avatar": "assets/image/default.jpg",
       },
       {
         "name": "Pencairan Dana",
-        "message": "Permintaan pencairan dana Rp1.000.000 sedang diproses.",
+        "message": "Permintaan pencairan dana Rp2.000.000 sedang diproses.",
         "time": "2 days ago",
         "highlight": false,
         "avatar": "assets/image/default.jpg",
       },
     ];
 
-    // hitung jumlah unread (highlight = true)
+    filteredNotifications = List.from(notifications);
+  }
+
+  void _searchNotifications(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredNotifications = List.from(notifications);
+      } else {
+        filteredNotifications = notifications
+            .where(
+              (n) =>
+                  n["name"].toLowerCase().contains(query.toLowerCase()) ||
+                  n["message"].toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
+      }
+    });
+  }
+
+  void _markAllAsRead() {
+    setState(() {
+      for (var notif in notifications) {
+        notif["highlight"] = false;
+      }
+      filteredNotifications = List.from(notifications);
+    });
+  }
+
+  void _deleteNotification(int index) {
+    setState(() {
+      notifications.remove(filteredNotifications[index]);
+      filteredNotifications.removeAt(index);
+    });
+  }
+
+  void _deleteAll() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Hapus Semua Notifikasi",
+          style: GoogleFonts.patuaOne(fontSize: 20),
+        ),
+        content: Text(
+          "Apakah Anda yakin ingin menghapus semua notifikasi?",
+          style: GoogleFonts.arvo(fontSize: 15),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Batal",
+              style: GoogleFonts.cinzel(
+                color: const Color(0xFF0D47A1),
+                fontSize: 15,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                notifications.clear();
+                filteredNotifications.clear();
+              });
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: Text(
+              "Hapus",
+              style: GoogleFonts.cinzel(fontSize: 15, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final unreadCount = notifications
         .where((n) => n["highlight"] == true)
         .length;
@@ -119,37 +209,36 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D47A1),
         centerTitle: true,
-        elevation: 1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(
           "Notifikasi Admin",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: GoogleFonts.youngSerif(
+            fontSize: 30,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           Stack(
             clipBehavior: Clip.none,
             children: [
               const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Icon(Icons.notifications, color: Colors.white),
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(Icons.notifications, color: Colors.white, size: 28),
               ),
               if (unreadCount > 0)
                 Positioned(
-                  right: 6,
-                  top: 6,
+                  right: 11,
+                  top: -4,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
+                    padding: const EdgeInsets.all(5),
                     decoration: const BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: Colors.redAccent,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 20,
+                      minHeight: 20,
                     ),
                     child: Text(
                       unreadCount.toString(),
@@ -158,68 +247,182 @@ class NotificationPage extends StatelessWidget {
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.search, color: Colors.white),
-          ),
         ],
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: notifications.length,
-              separatorBuilder: (context, index) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final notif = notifications[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: AssetImage(
-                      notif["avatar"] ?? "assets/images/default.png",
-                    ),
-                    radius: 24,
-                  ),
-                  title: Text(
-                    notif["name"]!,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: notif["highlight"] == true
-                          ? Colors.blue[800]
-                          : Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    notif["message"]!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Text(
-                    notif["time"]!,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            alignment: Alignment.center,
-            child: Text(
-              "Lihat semua aktivitas",
-              style: TextStyle(
-                color: Colors.blue[800],
-                fontWeight: FontWeight.bold,
+          // Search bar
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: _searchNotifications,
+              decoration: InputDecoration(
+                hintText: "Cari notifikasi...",
+                hintStyle: GoogleFonts.berkshireSwash(),
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
+          ),
+
+          // Tombol aksi
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _markAllAsRead,
+                  icon: const Icon(
+                    Icons.done_all,
+                    size: 18,
+                    color: Color(0xFF0D47A1),
+                  ),
+                  label: Text(
+                    "Tandai semua dibaca",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: Color(0xFF0D47A1)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: _deleteAll,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "Hapus semua",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(height: 1),
+
+          // Daftar notifikasi
+          Expanded(
+            child: filteredNotifications.isEmpty
+                ? Center(
+                    child: Text(
+                      "Tidak ada notifikasi",
+                      style: GoogleFonts.arvo(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    itemCount: filteredNotifications.length,
+                    separatorBuilder: (context, index) =>
+                        const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      final notif = filteredNotifications[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: AssetImage(notif["avatar"]),
+                          radius: 24,
+                        ),
+                        title: Text(
+                          notif["name"],
+                          style: GoogleFonts.patuaOne(
+                            color: notif["highlight"] == true
+                                ? const Color(0xFF0D47A1)
+                                : Colors.black87,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          notif["message"],
+                          style: GoogleFonts.arvo(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Text(
+                          notif["time"],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(
+                                "Hapus Notifikasi",
+                                style: GoogleFonts.patuaOne(fontSize: 20),
+                              ),
+                              content: Text(
+                                "Apakah Anda yakin ingin menghapus notifikasi ini?",
+                                style: GoogleFonts.arvo(fontSize: 15),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text(
+                                    "Batal",
+                                    style: GoogleFonts.cinzel(
+                                      color: const Color(0xFF0D47A1),
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    _deleteNotification(index);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "Hapus",
+                                    style: GoogleFonts.cinzel(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
           ),
         ],
       ),

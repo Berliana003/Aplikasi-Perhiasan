@@ -105,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           "Back to login",
                           style: GoogleFonts.berkshireSwash(
                             color: Colors.white70,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         ),
                       ],
@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       "Sign Up",
                       style: GoogleFonts.youngSerif(
-                        fontSize: 35,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -138,12 +138,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _emailController,
                     style: GoogleFonts.crimsonPro(
                       color: Colors.black,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     decoration: InputDecoration(
                       labelText: "Email",
                       labelStyle: GoogleFonts.berkshireSwash(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                       prefixIcon: const Icon(
@@ -165,13 +165,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _passwordController,
                     style: GoogleFonts.crimsonPro(
                       color: Colors.black,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: "Password",
                       labelStyle: GoogleFonts.berkshireSwash(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                       prefixIcon: const Icon(
@@ -204,13 +204,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _confirmController,
                     style: GoogleFonts.crimsonPro(
                       color: Colors.black,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     obscureText: _obscureConfirm,
                     decoration: InputDecoration(
                       labelText: "Confirm Password",
                       labelStyle: GoogleFonts.berkshireSwash(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                       prefixIcon: const Icon(
@@ -243,13 +243,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _phoneController,
                     style: GoogleFonts.crimsonPro(
                       color: Colors.black,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       labelText: "Phone",
                       labelStyle: GoogleFonts.berkshireSwash(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                       prefixIcon: const Icon(
@@ -284,7 +284,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               "Sign Up",
                               textAlign: TextAlign.center,
                               style: GoogleFonts.cinzel(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/category_page.dart';
 import 'package:flutter_application_1/screens/checkout_page.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
@@ -50,7 +51,7 @@ class _CartPageState extends State<CartPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Produk dihapus dari keranjang"),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
       ),
     );
   }
@@ -72,9 +73,13 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: Colors.blue[900],
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        title: Text(
           "Keranjang Belanja",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: GoogleFonts.youngSerif(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           badges.Badge(
@@ -99,7 +104,12 @@ class _CartPageState extends State<CartPage> {
         ],
       ),
       body: cartItems.isEmpty
-          ? const Center(child: Text("Keranjang kosong"))
+          ? Center(
+              child: Text(
+                "Keranjang kosong",
+                style: GoogleFonts.arvo(fontSize: 16),
+              ),
+            )
           : Column(
               children: [
                 Expanded(
@@ -157,7 +167,8 @@ class _CartPageState extends State<CartPage> {
                                     : const Icon(Icons.shopping_bag),
                                 title: Text(
                                   product.name,
-                                  style: const TextStyle(
+                                  style: GoogleFonts.patuaOne(
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -172,9 +183,10 @@ class _CartPageState extends State<CartPage> {
                                     const SizedBox(height: 4),
                                     Text(
                                       _formatRupiah(product.getFinalPrice()),
-                                      style: const TextStyle(
+                                      style: GoogleFonts.arvo(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   ],
@@ -235,14 +247,17 @@ class _CartPageState extends State<CartPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Total (${selectedItems.length} item)"),
+                          Text(
+                            "Total (${selectedItems.length} item)",
+                            style: GoogleFonts.patuaOne(fontSize: 15),
+                          ),
                           const SizedBox(height: 4),
                           Text(
                             _formatRupiah(_calculateTotal()),
-                            style: const TextStyle(
+                            style: GoogleFonts.arvo(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
                               color: Colors.red,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -276,9 +291,13 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                 );
                               },
-                        child: const Text(
+                        child: Text(
                           "Checkout",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                          style: GoogleFonts.cinzel(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],

@@ -82,7 +82,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       child: Text(
                         "Forgot Password",
                         style: GoogleFonts.youngSerif(
-                          fontSize: 35,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -103,7 +103,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     textAlign: TextAlign.start,
                     style: GoogleFonts.mouseMemoirs(
                       color: const Color.fromARGB(255, 1, 32, 54),
-                      fontSize: 30,
+                      fontSize: 25,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -111,12 +111,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     controller: _emailController,
                     style: GoogleFonts.crimsonPro(
                       color: Colors.black,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                     decoration: InputDecoration(
                       labelText: "Email",
                       labelStyle: GoogleFonts.berkshireSwash(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.black87,
                       ),
                       prefixIcon: const Icon(
@@ -148,7 +148,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           : Text(
                               "Kirim Link Reset",
                               style: GoogleFonts.cinzel(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),

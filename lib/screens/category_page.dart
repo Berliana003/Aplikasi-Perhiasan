@@ -6,6 +6,7 @@ import 'package:flutter_application_1/screens/cart_page.dart';
 import 'package:flutter_application_1/screens/login_page.dart';
 import 'package:flutter_application_1/screens/notification_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'home_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -29,6 +30,7 @@ class _CategoryPageState extends State<CategoryPage> {
   final TextEditingController _searchController = TextEditingController();
   final stockController = TextEditingController();
   final deliveryDaysController = TextEditingController();
+  final formatter = NumberFormat("#,###", "id_ID");
 
   String _searchQuery = "";
   String _selectedFilter = "All";
@@ -98,70 +100,128 @@ class _CategoryPageState extends State<CategoryPage> {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
             return AlertDialog(
-              title: const Text("Tambah Produk"),
+              title: Center(
+                child: Text(
+                  "Tambah Produk",
+                  style: GoogleFonts.berkshireSwash(
+                    fontSize: 20,
+                    color: Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     TextField(
                       controller: nameController,
-                      decoration: const InputDecoration(
+                      style: GoogleFonts.crimsonPro(fontSize: 14),
+                      decoration: InputDecoration(
                         labelText: "Nama Produk",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                     TextField(
                       controller: priceController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Harga"),
+                      style: GoogleFonts.crimsonPro(fontSize: 14),
+                      decoration: InputDecoration(
+                        labelText: "Harga",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: diskonController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Diskon (%)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                     TextField(
                       controller: ratingController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Rating"),
+                      decoration: InputDecoration(
+                        labelText: "Rating",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: soldController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Terjual"),
+                      decoration: InputDecoration(
+                        labelText: "Terjual",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: descriptionController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Deskripsi Produk",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 3,
                     ),
                     TextField(
                       controller: specificationController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Spesifikasi Produk (pisahkan dengan koma)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 2,
                     ),
                     TextField(
                       controller: variationController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText:
                             "Variasi (contoh: Warna: Merah, Biru; Ukuran: S, M, L)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 2,
                     ),
                     TextField(
                       controller: stockController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Stok"),
+                      decoration: InputDecoration(
+                        labelText: "Stok",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: deliveryDaysController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Estimasi Pengiriman (hari)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
 
@@ -198,19 +258,34 @@ class _CategoryPageState extends State<CategoryPage> {
                           });
                         }
                       },
-                      icon: const Icon(Icons.image),
-                      label: const Text("Pilih Gambar"),
+                      icon: const Icon(Icons.image, color: Color(0xFF0D47A1)),
+                      label: Text(
+                        "Pilih Gambar",
+                        style: GoogleFonts.cinzel(
+                          fontSize: 15,
+                          color: const Color(0xFF0D47A1),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
               actions: [
                 TextButton(
-                  child: const Text("Batal"),
+                  child: Text(
+                    "Batal",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
+                    ),
+                  ),
                   onPressed: () => Navigator.pop(context),
                 ),
                 ElevatedButton(
-                  child: const Text("Simpan"),
+                  child: Text(
+                    "Simpan",
+                    style: GoogleFonts.cinzel(fontSize: 15),
+                  ),
                   onPressed: () {
                     List<String> specification = specificationController.text
                         .split(',')
@@ -300,59 +375,127 @@ class _CategoryPageState extends State<CategoryPage> {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
             return AlertDialog(
-              title: const Text("Edit Produk"),
+              title: Center(
+                child: Text(
+                  "Edit Produk",
+                  style: GoogleFonts.berkshireSwash(
+                    fontSize: 20,
+                    color: Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     TextField(
                       controller: nameController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Nama Produk",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                     TextField(
                       controller: priceController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Harga"),
+                      decoration: InputDecoration(
+                        labelText: "Harga",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: diskonController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Diskon (%)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                     ),
                     TextField(
                       controller: ratingController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Rating"),
+                      decoration: InputDecoration(
+                        labelText: "Rating",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: soldController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Terjual"),
+                      decoration: InputDecoration(
+                        labelText: "Terjual",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     TextField(
                       controller: descriptionController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Deskripsi Produk",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 3,
                     ),
                     TextField(
                       controller: specificationController,
-                      decoration: const InputDecoration(
-                        labelText: "Spesifikasi (pisahkan dengan koma)",
+                      decoration: InputDecoration(
+                        labelText: "Spesifikasi Produk (pisahkan dengan koma)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 2,
                     ),
                     TextField(
                       controller: variationController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText:
                             "Variasi (contoh: Warna: Merah, Biru; Ukuran: S, M, L)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
                       ),
                       maxLines: 2,
+                    ),
+                    TextField(
+                      controller: stockController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "Stok",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    TextField(
+                      controller: deliveryDaysController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "Estimasi Pengiriman (hari)",
+                        labelStyle: GoogleFonts.berkshireSwash(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 12),
 
@@ -390,18 +533,36 @@ class _CategoryPageState extends State<CategoryPage> {
                         }
                       },
                       icon: const Icon(Icons.image),
-                      label: const Text("Pilih Gambar Baru"),
+                      label: Text(
+                        "Pilih Gambar Baru",
+                        style: GoogleFonts.cinzel(
+                          fontSize: 15,
+                          color: const Color(0xFF0D47A1),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
               actions: [
                 TextButton(
-                  child: const Text("Batal"),
+                  child: Text(
+                    "Batal",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
+                    ),
+                  ),
                   onPressed: () => Navigator.pop(context),
                 ),
                 ElevatedButton(
-                  child: const Text("Update"),
+                  child: Text(
+                    "Update",
+                    style: GoogleFonts.cinzel(
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
+                    ),
+                  ),
                   onPressed: () {
                     setState(() {
                       product.name = nameController.text;
@@ -457,7 +618,11 @@ class _CategoryPageState extends State<CategoryPage> {
       appBar: AppBar(
         title: Text(
           widget.category.name,
-          style: const TextStyle(color: Colors.white),
+          style: GoogleFonts.youngSerif(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: const Color(0xFF0D47A1),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -485,9 +650,11 @@ class _CategoryPageState extends State<CategoryPage> {
             padding: const EdgeInsets.all(12.0),
             child: TextField(
               controller: _searchController,
+              style: GoogleFonts.crimsonPro(fontSize: 15),
               onChanged: (_) => _applyFilters(),
               decoration: InputDecoration(
                 hintText: "Search",
+                hintStyle: GoogleFonts.berkshireSwash(fontSize: 16),
                 prefixIcon: const Icon(Icons.search, color: Colors.blue),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.filter_list, color: Colors.blue),
@@ -514,7 +681,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   ChoiceChip(
                     label: Text(
                       "All",
-                      style: TextStyle(
+                      style: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
                         color: _selectedFilter == "All"
                             ? Colors.white
                             : Colors.black,
@@ -530,7 +698,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   ChoiceChip(
                     label: Text(
                       "Diskon Terbesar",
-                      style: TextStyle(
+                      style: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
                         color: _selectedFilter == "Diskon Terbesar"
                             ? Colors.white
                             : Colors.black,
@@ -546,7 +715,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   ChoiceChip(
                     label: Text(
                       "Harga Termurah",
-                      style: TextStyle(
+                      style: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
                         color: _selectedFilter == "Harga Termurah"
                             ? Colors.white
                             : Colors.black,
@@ -562,7 +732,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   ChoiceChip(
                     label: Text(
                       "Trending",
-                      style: TextStyle(
+                      style: GoogleFonts.berkshireSwash(
+                        fontSize: 15,
                         color: _selectedFilter == "Trending"
                             ? Colors.white
                             : Colors.black,
@@ -584,7 +755,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
           // GridView Produk
           SizedBox(
-            height: 330,
+            height: 270,
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(
                 horizontal: 12.0,
@@ -594,14 +765,14 @@ class _CategoryPageState extends State<CategoryPage> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 mainAxisSpacing: 12,
-                childAspectRatio: 0.70,
+                childAspectRatio: 0.85,
               ),
               itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
                 final p = filteredProducts[index];
 
                 return SizedBox(
-                  width: 220,
+                  width: 210,
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -623,30 +794,33 @@ class _CategoryPageState extends State<CategoryPage> {
                           children: [
                             // Gambar
                             Expanded(
-                              flex: 13,
-                              child: () {
-                                if (p.imageBytes != null && kIsWeb) {
-                                  return Image.memory(
-                                    p.imageBytes!,
-                                    fit: BoxFit.contain,
-                                  );
-                                } else if (p.image.startsWith("assets/")) {
-                                  return Image.asset(
-                                    p.image,
-                                    fit: BoxFit.contain,
-                                  );
-                                } else if (p.image.isNotEmpty && !kIsWeb) {
-                                  return Image.file(
-                                    File(p.image),
-                                    fit: BoxFit.contain,
-                                  );
-                                } else {
-                                  return const Icon(
-                                    Icons.broken_image,
-                                    size: 120,
-                                  );
-                                }
-                              }(),
+                              flex: 10,
+                              child: SizedBox(
+                                height: 90,
+                                child: () {
+                                  if (p.imageBytes != null && kIsWeb) {
+                                    return Image.memory(
+                                      p.imageBytes!,
+                                      fit: BoxFit.contain,
+                                    );
+                                  } else if (p.image.startsWith("assets/")) {
+                                    return Image.asset(
+                                      p.image,
+                                      fit: BoxFit.contain,
+                                    );
+                                  } else if (p.image.isNotEmpty && !kIsWeb) {
+                                    return Image.file(
+                                      File(p.image),
+                                      fit: BoxFit.contain,
+                                    );
+                                  } else {
+                                    return const Icon(
+                                      Icons.broken_image,
+                                      size: 90,
+                                    );
+                                  }
+                                }(),
+                              ),
                             ),
 
                             const SizedBox(height: 4),
@@ -659,9 +833,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
+                                style: GoogleFonts.youngSerif(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 17,
+                                  fontSize: 15,
                                 ),
                               ),
                             ),
@@ -670,9 +844,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
                             // Harga
                             Text(
-                              formatRupiah(p.price),
-                              style: const TextStyle(
-                                fontSize: 14,
+                              "Rp ${formatter.format(p.price)}",
+                              style: GoogleFonts.youngSerif(
+                                fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.green,
                               ),
@@ -680,9 +854,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
                             // Diskon
                             Text(
-                              "Diskon ${p.diskon.toStringAsFixed(0)}%",
-                              style: const TextStyle(
-                                fontSize: 13,
+                              "Diskon ${p.diskon}%",
+                              style: GoogleFonts.youngSerif(
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.red,
                               ),
@@ -697,19 +871,23 @@ class _CategoryPageState extends State<CategoryPage> {
                                 const Icon(
                                   Icons.star,
                                   color: Colors.amber,
-                                  size: 13,
+                                  size: 12,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   p.rating.toStringAsFixed(1),
-                                  style: const TextStyle(fontSize: 13),
+                                  style: GoogleFonts.arvo(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
                                 ),
                                 const SizedBox(width: 3),
                                 Text(
                                   "Terjual ${p.sold}",
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey,
+                                  style: GoogleFonts.arvo(
+                                    fontSize: 12,
+                                    color: Colors.black87,
                                   ),
                                 ),
                               ],
@@ -795,7 +973,9 @@ class _CategoryPageState extends State<CategoryPage> {
         selectedItemColor: Colors.lightBlue[400],
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
-        items: const [
+        selectedLabelStyle: GoogleFonts.youngSerif(fontSize: 15),
+        unselectedLabelStyle: GoogleFonts.youngSerif(fontSize: 15),
+        items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(

@@ -106,24 +106,17 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Bar
-            GFSearchBar(
-              searchList: messages.map((m) => m["name"]!).toList(),
-              searchQueryBuilder: (query, list) {
-                return list
-                    .where(
-                      (item) =>
-                          item.toLowerCase().contains(query.toLowerCase()),
-                    )
-                    .toList();
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Cari nama atau pesan...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (val) {
+                _updateQuery(val);
               },
-              overlaySearchListItemBuilder: (String? item) {
-                return ListTile(title: Text(item ?? ""));
-              },
-              onItemSelected: (String? item) {
-                if (item != null) _updateQuery(item);
-              },
-              hideSearchBoxWhenItemSelected: false,
             ),
             const SizedBox(height: 20),
 

@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                       "Welcome Back!",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.youngSerif(
-                        fontSize: 35,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.berkshireSwash(
                         color: Colors.white70,
-                        fontSize: 20,
+                        fontSize: 15,
                       ),
                     ),
                   ],
@@ -146,12 +146,12 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _emailController,
                       style: GoogleFonts.crimsonPro(
                         color: Colors.black,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
                       decoration: InputDecoration(
                         labelText: "Email",
                         labelStyle: GoogleFonts.berkshireSwash(
-                          fontSize: 15,
+                          fontSize: 16,
                           color: Colors.black87,
                         ),
                         prefixIcon: Icon(Icons.email, color: Color(0xFF0D47A1)),
@@ -171,13 +171,13 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: _obscurePassword,
                       style: GoogleFonts.crimsonPro(
                         color: Colors.black,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
                       decoration: InputDecoration(
                         labelText: "Password",
                         labelStyle: GoogleFonts.berkshireSwash(
                           color: Colors.black87,
-                          fontSize: 15,
+                          fontSize: 16,
                         ),
                         prefixIcon: const Icon(
                           Icons.lock,
@@ -267,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                             : Text(
                                 "Login",
                                 style: GoogleFonts.cinzel(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),

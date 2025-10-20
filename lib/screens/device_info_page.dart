@@ -105,7 +105,7 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
         children: [
           Text(
             label,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.arvo(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.black87,
@@ -115,7 +115,7 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.arvo(
                 fontSize: value.length > 50 ? 12 : 15,
                 color: Colors.grey[700],
               ),
@@ -130,8 +130,16 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Informasi Perangkat"),
-        backgroundColor: Colors.deepOrange,
+        title: Text(
+          "Informasi Perangkat",
+          style: GoogleFonts.youngSerif(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF0D47A1),
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -148,7 +156,15 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Divider(color: Colors.deepOrange, thickness: 1),
+                    Text(
+                      "Detail Perangkat",
+                      style: GoogleFonts.patuaOne(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF0D47A1),
+                      ),
+                    ),
+                    const Divider(color: Color(0xFF0D47A1), thickness: 1),
                     _buildDeviceField("Model", _deviceModel),
                     _buildDeviceField("OS", _osVersion),
                   ],
@@ -163,7 +179,7 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
                   decoration: BoxDecoration(
                     color: Colors.red.shade100,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red.shade400),
+                    border: Border.all(color: const Color(0xFF0D47A1)),
                   ),
                   child: Text(
                     _errorMessage,

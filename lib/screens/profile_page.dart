@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +18,10 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   // Data user
   UserProfile profile = UserProfile(
-    name: "Nama User",
-    email: "user@email.com",
-    address: "Jakarta, Indonesia",
-    phone: "+62 812-3456-7890",
+    name: "Dewi Berliana",
+    email: "Berlian@gmail.com",
+    address: "Madiun, Jawa Timur",
+    phone: "+62 859-7370-0816",
   );
 
   // Controller
@@ -149,9 +150,13 @@ class _ProfilePageState extends State<ProfilePage>
         backgroundColor: const Color(0xFF0D47A1),
         elevation: 2,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Profile",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: GoogleFonts.youngSerif(
+            fontSize: 30,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -218,16 +223,16 @@ class _ProfilePageState extends State<ProfilePage>
         const SizedBox(height: 15),
         Text(
           profile.name,
-          style: const TextStyle(
-            fontSize: 22,
+          style: GoogleFonts.berkshireSwash(
+            fontSize: 19,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0D47A1),
+            color: const Color(0xFF0D47A1),
           ),
         ),
         const SizedBox(height: 5),
         Text(
           profile.email,
-          style: const TextStyle(color: Colors.grey, fontSize: 15),
+          style: GoogleFonts.berkshireSwash(color: Colors.black, fontSize: 16),
         ),
       ],
     );
@@ -268,12 +273,16 @@ class _ProfilePageState extends State<ProfilePage>
   ) {
     return TextField(
       controller: controller,
+      style: GoogleFonts.crimsonPro(fontSize: 18, color: Colors.black87),
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: const Color(0xFF0D47A1)),
         filled: true,
         fillColor: const Color(0xFFF8FAFF),
-        labelStyle: const TextStyle(color: Colors.black87),
+        labelStyle: GoogleFonts.berkshireSwash(
+          color: Colors.black,
+          fontSize: 16,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
@@ -290,9 +299,9 @@ class _ProfilePageState extends State<ProfilePage>
     return ElevatedButton.icon(
       onPressed: saveProfile,
       icon: const Icon(Icons.save, color: Colors.white),
-      label: const Text(
+      label: Text(
         "Simpan Perubahan",
-        style: TextStyle(
+        style: GoogleFonts.cinzel(
           fontSize: 16,
           fontWeight: FontWeight.bold,
           color: Colors.white,

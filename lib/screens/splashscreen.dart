@@ -64,13 +64,13 @@ class _SplashScreenState extends State<SplashScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo
-              Image.asset("assets/image/logo_berlian.png", height: 200),
+              Image.asset("assets/image/logo_berlian.png", height: 150),
 
               // Nama aplikasi
               Text(
                 "Brilliant",
                 style: GoogleFonts.cinzel(
-                  fontSize: 50,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   letterSpacing: 2,
@@ -105,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen>
               // Loading indicator pakai dotsTriangle
               LoadingAnimationWidget.dotsTriangle(
                 color: Colors.white,
-                size: 60,
+                size: 40,
               ),
             ],
           ),

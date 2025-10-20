@@ -4,17 +4,16 @@ class CartItem {
   final Product product;
   final Map<String, String>? selectedVariations;
   int quantity;
+  Map<String, String>? variations;
 
   CartItem({
     required this.product,
+    required this.quantity,
     this.selectedVariations,
-    this.quantity = 1,
     String? selectedVariation,
   });
 
-  double get totalPrice {
-    return product.getFinalPrice() * quantity;
-  }
+  double get totalPrice => product.getFinalPrice() * quantity;
 
   @override
   String toString() {

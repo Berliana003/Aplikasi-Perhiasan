@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/order_history.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class OrderHistoryPage extends StatelessWidget {
@@ -15,12 +16,27 @@ class OrderHistoryPage extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Riwayat Pemesanan"),
-        backgroundColor: Colors.blue,
+        title: Text(
+          "Riwayat Pemesanan",
+          style: GoogleFonts.youngSerif(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFF0D47A1),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: orders.isEmpty
-          ? const Center(child: Text("Belum ada pesanan"))
+          ? Center(
+              child: Text(
+                "Belum ada pesanan",
+                style: GoogleFonts.arvo(fontSize: 14, color: Colors.grey[700]),
+              ),
+            )
           : ListView.builder(
               itemCount: orders.length,
               itemBuilder: (context, index) {
@@ -37,24 +53,38 @@ class OrderHistoryPage extends StatelessWidget {
                       height: 50,
                       fit: BoxFit.cover,
                     ),
-                    title: Text(order.product.name),
+                    title: Text(
+                      order.product.name,
+                      style: GoogleFonts.youngSerif(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Jumlah: ${order.quantity}"),
-                        Text("Metode: ${order.paymentMethod}"),
+                        Text(
+                          "Jumlah: ${order.quantity}",
+                          style: GoogleFonts.arvo(fontSize: 14),
+                        ),
+                        Text(
+                          "Metode: ${order.paymentMethod}",
+                          style: GoogleFonts.arvo(fontSize: 14),
+                        ),
                         Text(
                           "Total: ${formatCurrency.format(order.total)}",
-                          style: const TextStyle(
+                          style: GoogleFonts.arvo(
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),
                         ),
                         Text(
                           "Tanggal: ${DateFormat('dd/MM/yyyy HH:mm').format(order.date)}",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
+                          style: GoogleFonts.arvo(
+                            fontSize: 14,
+                            color: Colors.grey[700],
                           ),
                         ),
                       ],

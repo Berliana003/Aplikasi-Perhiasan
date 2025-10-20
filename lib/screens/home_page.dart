@@ -1,7 +1,5 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_1/screens/address_page.dart';
 import 'package:flutter_application_1/screens/cart_page.dart';
 import 'package:flutter_application_1/screens/login_page.dart';
 import 'package:flutter_application_1/models/emas.dart';
@@ -9,19 +7,17 @@ import 'package:flutter_application_1/models/perak.dart';
 import 'package:flutter_application_1/models/berlian.dart';
 import 'package:flutter_application_1/models/product.dart';
 import 'package:flutter_application_1/screens/notification_page.dart';
-import 'package:flutter_application_1/screens/order_history_page.dart';
-import 'package:flutter_application_1/screens/privacy_page.dart';
+import 'package:flutter_application_1/screens/product_detail_page.dart';
 import 'package:flutter_application_1/screens/profile_page.dart';
-import 'package:flutter_application_1/screens/security_page.dart';
+import 'package:flutter_application_1/screens/settings_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'category_page.dart';
-import 'dart:io';
+import 'package:intl/intl.dart';
 
 class Category {
   final String name;
   final IconData icon;
   final List<Product> products;
-
   Category({required this.name, required this.icon, required this.products});
 }
 
@@ -35,37 +31,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser;
   final TextEditingController _searchController = TextEditingController();
-
+  final formatter = NumberFormat("#,###", "id_ID");
   late List<Product> _allProducts;
   late List<Product> _filteredProducts;
 
   int _selectedIndex = 0;
   String _selectedFilter = "All";
-  String _deviceInfo = "Memuat info perangkat...";
 
   @override
   void initState() {
     super.initState();
-    _getDeviceInfo();
     _allProducts = [...daftarEmas, ...daftarPerak, ...daftarBerlian];
     _filteredProducts = List.from(_allProducts);
-  }
-
-  Future<void> _getDeviceInfo() async {
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    String info = "Tidak diketahui";
-
-    if (Platform.isAndroid) {
-      final androidInfo = await deviceInfoPlugin.androidInfo;
-      info = "${androidInfo.manufacturer} ${androidInfo.model}";
-    } else if (Platform.isIOS) {
-      final iosInfo = await deviceInfoPlugin.iosInfo;
-      info = "${iosInfo.name} (${iosInfo.systemVersion})";
-    }
-
-    setState(() {
-      _deviceInfo = info;
-    });
   }
 
   List<Category> categories = [
@@ -128,23 +105,25 @@ class _HomePageState extends State<HomePage> {
           builder: (context, setStateDialog) {
             return AlertDialog(
               title: Text(
-                style: GoogleFonts.mouseMemoirs(
-                  color: Colors.black,
-                  fontSize: 30,
-                ),
+                style: GoogleFonts.patuaOne(color: Colors.black, fontSize: 23),
                 category == null ? "Tambah Kategori" : "Edit Kategori",
+                textAlign: TextAlign.center,
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: nameController,
-                    style: GoogleFonts.caveat(
+                    style: GoogleFonts.crimsonPro(
                       color: Colors.black,
                       fontSize: 15,
                     ),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: "Nama Kategori",
+                      labelStyle: GoogleFonts.berkshireSwash(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -182,7 +161,8 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     "Batal",
                     style: GoogleFonts.cinzel(
-                      fontSize: 20,
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -208,7 +188,8 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     "Simpan",
                     style: GoogleFonts.cinzel(
-                      fontSize: 20,
+                      fontSize: 15,
+                      color: const Color(0xFF0D47A1),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -226,142 +207,54 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Hapus Kategori"),
-        content: Text('Yakin menghapus kategori "${categories[index].name}"?'),
+        title: Text(
+          "Hapus Kategori",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.patuaOne(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        content: Text(
+          'Yakin menghapus kategori "${categories[index].name}"?',
+          style: GoogleFonts.arvo(fontSize: 15, color: Colors.black87),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Batal"),
+            child: Text(
+              "Batal",
+              style: GoogleFonts.cinzel(
+                fontSize: 15,
+                color: const Color(0xFF0D47A1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              shadowColor: Colors.lightBlueAccent,
+              elevation: 0,
+            ),
             onPressed: () {
               setState(() {
                 categories.removeAt(index);
               });
               Navigator.pop(context);
             },
-            child: const Text("Hapus"),
+            child: Text(
+              "Hapus",
+              style: GoogleFonts.cinzel(
+                fontSize: 15,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
-    );
-  }
-
-  void _showSettingsModal() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // biar bisa tinggi penuh jika perlu
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            height:
-                MediaQuery.of(context).size.height * 0.6, // 60% tinggi layar
-            child: Column(
-              children: [
-                // Header modal
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Pengaturan",
-                      style: GoogleFonts.youngSerif(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-                const Divider(),
-
-                // List menu
-                Expanded(
-                  child: ListView(
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          Icons.info,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        title: const Text("Info Perangkat"),
-                        subtitle: Text(
-                          _deviceInfo,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: Icon(Icons.history, color: Colors.green[400]),
-                        title: const Text("Riwayat Checkout"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const OrderHistoryPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: const Icon(Icons.lock, color: Colors.orange),
-                        title: const Text("Keamanan & Login"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const SecurityPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.location_on,
-                          color: Colors.blue,
-                        ),
-                        title: const Text("Alamat & Pengiriman"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const AddressPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.privacy_tip,
-                          color: Colors.purple,
-                        ),
-                        title: const Text("Privasi & Akun"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const PrivacyPage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -374,12 +267,14 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.settings, color: Colors.white),
-          onPressed: _showSettingsModal,
+          onPressed: () {
+            SettingsPage.show(context);
+          },
         ),
         title: Text(
           "Home",
           style: GoogleFonts.youngSerif(
-            fontSize: 35,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -410,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "Selamat Datang 👋",
                   style: GoogleFonts.cinzel(
-                    fontSize: 30,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0D47A1),
                   ),
@@ -420,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                   user?.email ?? "User",
                   style: GoogleFonts.berkshireSwash(
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 19,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -430,6 +325,7 @@ class _HomePageState extends State<HomePage> {
             // Search bar
             TextField(
               controller: _searchController,
+              style: GoogleFonts.crimsonPro(color: Colors.black, fontSize: 16),
               onChanged: (_) => _applyFilters(),
               decoration: InputDecoration(
                 hintText: "Search",
@@ -465,7 +361,14 @@ class _HomePageState extends State<HomePage> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: ChoiceChip(
-                      label: Text(f),
+                      label: Text(
+                        f,
+                        style: GoogleFonts.berkshireSwash(
+                          color: isSelected ? Colors.white : Colors.black87,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       selected: isSelected,
                       onSelected: (val) {
                         setState(() {
@@ -486,10 +389,19 @@ class _HomePageState extends State<HomePage> {
 
             Expanded(
               child:
-                  ((_searchController.text.isNotEmpty ||
+                  (_searchController.text.isNotEmpty ||
                       _selectedFilter != "All")
                   ? (_filteredProducts.isEmpty
-                        ? const Center(child: Text("Produk tidak ditemukan"))
+                        ? Center(
+                            child: Text(
+                              "Produk tidak ditemukan",
+                              style: GoogleFonts.arvo(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
                         : GridView.builder(
                             scrollDirection: Axis.horizontal,
                             gridDelegate:
@@ -502,8 +414,17 @@ class _HomePageState extends State<HomePage> {
                             itemCount: _filteredProducts.length,
                             itemBuilder: (context, index) {
                               final p = _filteredProducts[index];
-                              return SizedBox(
-                                width: 220,
+                              return InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          ProductDetailPage(product: p),
+                                    ),
+                                  );
+                                },
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
@@ -540,27 +461,28 @@ class _HomePageState extends State<HomePage> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(
+                                          style: GoogleFonts.youngSerif(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 14,
+                                            fontSize: 15,
                                           ),
                                         ),
                                         Text(
-                                          "Rp ${p.price.toStringAsFixed(0)}",
-                                          style: const TextStyle(
-                                            fontSize: 12,
+                                          "Rp ${formatter.format(p.price)}",
+                                          style: GoogleFonts.youngSerif(
+                                            fontSize: 13,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.green,
                                           ),
                                         ),
                                         Text(
                                           "Diskon ${p.diskon}%",
-                                          style: const TextStyle(
-                                            fontSize: 11,
+                                          style: GoogleFonts.youngSerif(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.red,
                                           ),
                                         ),
+                                        const SizedBox(height: 4),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -570,19 +492,21 @@ class _HomePageState extends State<HomePage> {
                                               color: Colors.amber,
                                               size: 12,
                                             ),
-                                            const SizedBox(width: 3),
+                                            const SizedBox(width: 4),
                                             Text(
                                               p.rating.toStringAsFixed(1),
-                                              style: const TextStyle(
-                                                fontSize: 11,
+                                              style: GoogleFonts.arvo(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
                                               ),
                                             ),
-                                            const SizedBox(width: 5),
+                                            const SizedBox(width: 8),
                                             Text(
                                               "Terjual ${p.sold}",
-                                              style: const TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.grey,
+                                              style: GoogleFonts.arvo(
+                                                fontSize: 12,
+                                                color: Colors.black87,
                                               ),
                                             ),
                                           ],
@@ -612,7 +536,7 @@ class _HomePageState extends State<HomePage> {
                                   leading: Icon(cat.icon, color: Colors.blue),
                                   title: Text(
                                     cat.name,
-                                    style: const TextStyle(
+                                    style: GoogleFonts.youngSerif(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -632,32 +556,21 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.blue,
-                                  ),
-                                  onPressed: () => _showCategoryDialog(
-                                    category: cat,
-                                    index: index,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () => _deleteCategory(index),
-                                ),
-                              ],
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.blue),
+                              onPressed: () => _showCategoryDialog(
+                                category: cat,
+                                index: index,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => _deleteCategory(index),
                             ),
                           ],
                         );
                       },
-                    )),
+                    ),
             ),
           ],
         ),
@@ -674,7 +587,14 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.category),
-                    title: const Text("Tambah Kategori"),
+                    title: Text(
+                      "Tambah Kategori",
+                      style: GoogleFonts.youngSerif(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                       _showCategoryDialog();
@@ -721,7 +641,11 @@ class _HomePageState extends State<HomePage> {
         },
         selectedItemColor: Colors.lightBlue[400],
         unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+        selectedLabelStyle: GoogleFonts.youngSerif(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: GoogleFonts.youngSerif(fontSize: 15),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
