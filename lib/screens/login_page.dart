@@ -77,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (mounted) {
-        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: Colors.red),
         );
