@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAMUxRIZ8PtdwFjfw9GsNzxZhOeDLeZ9Ik',
-    appId: '1:1076550807925:web:8e3136471f0eeb3604633c',
-    messagingSenderId: '1076550807925',
-    projectId: 'tugas-1-f0eb9',
-    authDomain: 'tugas-1-f0eb9.firebaseapp.com',
-    storageBucket: 'tugas-1-f0eb9.firebasestorage.app',
-    measurementId: 'G-V4ZZS17VR9',
+    apiKey: 'AIzaSyBp6GQA9xnIRTakEHZsluXv9MKk7lqFpHg',
+    appId: '1:280603210483:web:809b18dd8c6eb3ea143d86',
+    messagingSenderId: '280603210483',
+    projectId: 'dewi-berliana-brilliant',
+    authDomain: 'dewi-berliana-brilliant.firebaseapp.com',
+    storageBucket: 'dewi-berliana-brilliant.firebasestorage.app',
+    measurementId: 'G-28KZDW4FCM',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDbI7SLn2zYyQ35q_AOgE6en-AlLIB3mD0',
-    appId: '1:1076550807925:android:1b9156669220cfb204633c',
-    messagingSenderId: '1076550807925',
-    projectId: 'tugas-1-f0eb9',
-    storageBucket: 'tugas-1-f0eb9.firebasestorage.app',
+    apiKey: 'AIzaSyBYTgHCnNZXa1il549j-KRO2dtVu-9Izt8',
+    appId: '1:280603210483:android:b62166d37ac1d398143d86',
+    messagingSenderId: '280603210483',
+    projectId: 'dewi-berliana-brilliant',
+    storageBucket: 'dewi-berliana-brilliant.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCdTOSyjnuRPtZHeY0wzbr8c9IT8qZm8-Y',
-    appId: '1:1076550807925:ios:9f78b8159d122f4504633c',
-    messagingSenderId: '1076550807925',
-    projectId: 'tugas-1-f0eb9',
-    storageBucket: 'tugas-1-f0eb9.firebasestorage.app',
+    apiKey: 'AIzaSyALS2hoC4uEif8J5F3thfc9AbKY7Y41BpM',
+    appId: '1:280603210483:ios:dffa46db2b25a55c143d86',
+    messagingSenderId: '280603210483',
+    projectId: 'dewi-berliana-brilliant',
+    storageBucket: 'dewi-berliana-brilliant.firebasestorage.app',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCdTOSyjnuRPtZHeY0wzbr8c9IT8qZm8-Y',
-    appId: '1:1076550807925:ios:9f78b8159d122f4504633c',
-    messagingSenderId: '1076550807925',
-    projectId: 'tugas-1-f0eb9',
-    storageBucket: 'tugas-1-f0eb9.firebasestorage.app',
+    apiKey: 'AIzaSyALS2hoC4uEif8J5F3thfc9AbKY7Y41BpM',
+    appId: '1:280603210483:ios:dffa46db2b25a55c143d86',
+    messagingSenderId: '280603210483',
+    projectId: 'dewi-berliana-brilliant',
+    storageBucket: 'dewi-berliana-brilliant.firebasestorage.app',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAMUxRIZ8PtdwFjfw9GsNzxZhOeDLeZ9Ik',
-    appId: '1:1076550807925:web:ae78624bfcefa61704633c',
-    messagingSenderId: '1076550807925',
-    projectId: 'tugas-1-f0eb9',
-    authDomain: 'tugas-1-f0eb9.firebaseapp.com',
-    storageBucket: 'tugas-1-f0eb9.firebasestorage.app',
-    measurementId: 'G-SHXHBJHT85',
+    apiKey: 'AIzaSyBp6GQA9xnIRTakEHZsluXv9MKk7lqFpHg',
+    appId: '1:280603210483:web:90d2bb36bb6c6e99143d86',
+    messagingSenderId: '280603210483',
+    projectId: 'dewi-berliana-brilliant',
+    authDomain: 'dewi-berliana-brilliant.firebaseapp.com',
+    storageBucket: 'dewi-berliana-brilliant.firebasestorage.app',
+    measurementId: 'G-Q9J8BPKY2N',
   );
+
 }
