@@ -131,6 +131,11 @@ class Product {
     return _stock > 0;
   }
 
+  /// 🪄 Polymorphism:
+  /// Method ini dapat dioverride oleh subclass (Emas, Perak, Berlian)
+  /// untuk menampilkan informasi spesifik setiap jenis produk.
+  String getExtraInfo() => "";
+
   @override
   String toString() {
     return "$_name | Harga: Rp$_price | Diskon: $_diskon% | Final: Rp${getFinalPrice()} "

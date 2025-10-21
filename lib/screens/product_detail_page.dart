@@ -16,10 +16,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:typed_data';
 import 'dart:html' as html;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_application_1/models/emas.dart';
+import 'package:flutter_application_1/models/perak.dart';
+import 'package:flutter_application_1/models/berlian.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
-
   const ProductDetailPage({super.key, required this.product});
 
   @override
@@ -148,6 +150,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   _buildRatingSold(product, getResponsiveSize(context, 1)),
                   _buildStockDelivery(product, formattedDate),
+
                   if (product.description != null &&
                       product.description!.isNotEmpty)
                     _buildSection(
@@ -157,6 +160,33 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   if (product.specification != null &&
                       product.specification!.isNotEmpty)
                     _buildSpecSection(product),
+
+                  // Tambahan Polymorphism
+                  if (product is Emas)
+                    _buildPolymorphismSection(
+                      title: "Informasi Emas",
+                      value:
+                          "Kadar Emas: ${product.kadarEmas.toStringAsFixed(2)}%",
+                      icon: Icons.star_rate_rounded,
+                      iconColor: Colors.amber[700],
+                    ),
+                  if (product is Perak)
+                    _buildPolymorphismSection(
+                      title: "Informasi Perak",
+                      value:
+                          "Kemurnian Perak: ${product.kemurnianPerak.toStringAsFixed(2)}%",
+                      icon: Icons.auto_awesome,
+                      iconColor: Colors.grey[700],
+                    ),
+                  if (product is Berlian)
+                    _buildPolymorphismSection(
+                      title: "Informasi Berlian",
+                      value:
+                          "Karat Berlian: ${product.karatBerlian.toStringAsFixed(2)} ct",
+                      icon: Icons.diamond_rounded,
+                      iconColor: Colors.blue[700],
+                    ),
+
                   if (product.variation != null &&
                       product.variation!.isNotEmpty)
                     _buildVariationSection(product),
@@ -167,6 +197,48 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPolymorphismSection({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color? iconColor,
+  }) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(16),
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: iconColor, size: 22),
+              const SizedBox(width: 6),
+              Text(
+                title,
+                style: GoogleFonts.patuaOne(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.arvo(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
+        ],
       ),
     );
   }

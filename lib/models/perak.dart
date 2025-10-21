@@ -1,6 +1,8 @@
 import 'product.dart';
 
 class Perak extends Product {
+  double _kemurnianPerak;
+
   Perak({
     required super.id,
     required super.name,
@@ -11,12 +13,14 @@ class Perak extends Product {
     required super.sold,
     required super.stock,
     required super.deliveryDays,
+    double kemurnianPerak = 92.5,
     super.description,
     super.specification,
     super.variation,
-  });
+  }) : _kemurnianPerak = kemurnianPerak;
 
   // Getter
+  double get kemurnianPerak => _kemurnianPerak;
   String get productName => name;
   double get productPrice => price;
   double get productDiskon => diskon;
@@ -26,6 +30,13 @@ class Perak extends Product {
       "$name | Rp${finalPrice.toStringAsFixed(0)} (${diskon.toStringAsFixed(0)}% OFF)";
 
   // Setter
+  set kemurnianPerak(double value) {
+    if (value < 0 || value > 100) {
+      throw ArgumentError("❌ Kemurnian perak harus 0–100%");
+    }
+    _kemurnianPerak = value;
+  }
+
   set updateName(String newName) {
     if (newName.isNotEmpty) {
       name = newName;
@@ -50,7 +61,37 @@ class Perak extends Product {
     }
   }
 
-  /// Override untuk memberi label khusus Perak
+  set updateKemurnian(double newKemurnian) {
+    if (newKemurnian >= 0 && newKemurnian <= 100) {
+      _kemurnianPerak = newKemurnian;
+    } else {
+      throw Exception("❌ Kemurnian perak harus antara 0–100%");
+    }
+  }
+
+  // Method tambahan (Polymorphism)
+  // Hitung harga berdasarkan kemurnian perak
+  double getPriceByKemurnian() {
+    return finalPrice * (_kemurnianPerak / 100);
+  }
+
+  // Cek apakah perak ini premium (misal: >= 90%)
+  bool isPremium() {
+    return _kemurnianPerak >= 90;
+  }
+
+  // Cek apakah kemurnian standar Sterling Silver 925
+  bool isSterlingSilver() {
+    return _kemurnianPerak >= 92.5 && _kemurnianPerak <= 93;
+  }
+
+  // Override polymorphism
+  @override
+  String getExtraInfo() {
+    return "Kemurnian Perak: ${_kemurnianPerak.toStringAsFixed(2)}%";
+  }
+
+  // Override untuk memberi label khusus Perak
   @override
   String toString() {
     return "🤍 Perak: ${super.toString()}";

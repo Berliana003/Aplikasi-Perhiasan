@@ -1,6 +1,7 @@
 import 'product.dart';
 
 class Emas extends Product {
+  double _kadarEmas;
   Emas({
     required super.id,
     required super.name,
@@ -11,12 +12,15 @@ class Emas extends Product {
     required super.sold,
     required super.stock,
     required super.deliveryDays,
+    double kadarEmas = 99.99,
     super.description,
     super.specification,
     super.variation,
-  });
+  }) : _kadarEmas = kadarEmas;
 
   // Getter
+  double get kadarEmas => _kadarEmas;
+
   // Hitung harga setelah diskon
   double get finalPrice => price - (price * (diskon / 100));
 
@@ -27,6 +31,13 @@ class Emas extends Product {
   String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
 
   // Setter
+  set kadarEmas(double value) {
+    if (value < 0 || value > 100) {
+      throw ArgumentError("❌ Kadar emas harus antara 0–100%");
+    }
+    _kadarEmas = value;
+  }
+
   set updatePrice(double newPrice) {
     if (newPrice > 0) {
       price = newPrice;
@@ -57,6 +68,29 @@ class Emas extends Product {
     } else {
       throw Exception("❌ Nama produk tidak boleh kosong!");
     }
+  }
+
+  set updateKadar(double newKadar) {
+    if (newKadar >= 0 && newKadar <= 100) {
+      _kadarEmas = newKadar;
+    } else {
+      throw Exception("❌ Kadar emas harus antara 0–100%");
+    }
+  }
+
+  // Hitung harga sebenarnya berdasarkan kadar emas
+  double getPriceByKadar() {
+    return finalPrice * (_kadarEmas / 100);
+  }
+
+  /// Cek apakah kadar emas tinggi (misalnya > 90%)
+  bool isKadarPremium() {
+    return _kadarEmas >= 90;
+  }
+
+  /// Cek apakah kadar emas murni (>= 99.99%)
+  bool isMurni() {
+    return _kadarEmas >= 99.9;
   }
 
   // Override untuk memberi label khusus emas

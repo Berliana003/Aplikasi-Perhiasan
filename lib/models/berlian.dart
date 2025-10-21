@@ -1,6 +1,7 @@
 import 'product.dart';
 
 class Berlian extends Product {
+  double _karatBerlian;
   Berlian({
     required super.id,
     required super.name,
@@ -14,9 +15,12 @@ class Berlian extends Product {
     required super.description,
     required super.specification,
     required super.variation,
-  });
+    double karatBerlian = 0.25,
+  }) : _karatBerlian = karatBerlian;
 
   // Getter
+  double get karatBerlian => _karatBerlian;
+
   // Mengambil harga setelah diskon
   double get finalPrice => price - (price * (diskon / 100));
 
@@ -27,6 +31,14 @@ class Berlian extends Product {
   String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
 
   // Setter
+  set karatBerlian(double value) {
+    if (value > 0) {
+      _karatBerlian = value;
+    } else {
+      throw Exception("❌ Karat berlian harus lebih dari 0");
+    }
+  }
+
   set updatePrice(double newPrice) {
     if (newPrice > 0) {
       price = newPrice;
@@ -59,7 +71,37 @@ class Berlian extends Product {
     }
   }
 
-  /// Override method untuk menambahkan ikon khusus Berlian
+  set updateKarat(double newKarat) {
+    if (newKarat > 0)
+      _karatBerlian = newKarat;
+    else
+      throw Exception("❌ Karat berlian harus positif!");
+  }
+
+  // Method Tambahan Polymorphism
+  // Hitung harga berdasarkan karat berlian (misalnya setiap karat punya nilai tambahan)
+  double getPriceByKarat() {
+    const hargaPerKarat = 50000000; // contoh nilai tambah per karat
+    return finalPrice + (_karatBerlian * hargaPerKarat);
+  }
+
+  // Cek apakah karat tergolong premium
+  bool isPremium() {
+    return _karatBerlian >= 1.0; // ≥ 1 karat dianggap premium
+  }
+
+  // Cek apakah karat kecil (perhiasan ringan)
+  bool isMiniDiamond() {
+    return _karatBerlian < 0.25;
+  }
+
+  // Override polymorphism untuk ProductDetailPage
+  @override
+  String getExtraInfo() {
+    return "Karat Berlian: ${_karatBerlian.toStringAsFixed(2)} ct";
+  }
+
+  // Override method untuk menambahkan ikon khusus Berlian
   @override
   String toString() {
     return "💎 Berlian: ${super.toString()} | Final Price: Rp$finalPrice | Status: $stockStatus";
@@ -94,7 +136,6 @@ List<Berlian> daftarBerlian = [
     ],
 
     variation: {
-      "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Panjang Kalung": ["40 cm", "45 cm", "50 cm"],
       "Desain": [
         "Solitaire Diamond",
@@ -131,7 +172,6 @@ List<Berlian> daftarBerlian = [
     ],
 
     variation: {
-      "Karat Berlian": ["0.10 ct", "0.25 ct", "0.50 ct"],
       "Berat Emas": ["2 gr", "3 gr", "5 gr"],
       "Model": ["Solitaire", "Three-Stone", "Halo", "Eternity"],
     },
@@ -162,7 +202,6 @@ List<Berlian> daftarBerlian = [
     ],
 
     variation: {
-      "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Panjang Gelang": ["16 cm", "18 cm", "20 cm"],
       "Model": ["Tennis Bracelet", "Charm Diamond", "Classic Chain"],
     },
@@ -195,7 +234,6 @@ List<Berlian> daftarBerlian = [
 
     variation: {
       "Bentuk": ["Stud", "Hoop", "Drop", "Cluster"],
-      "Karat Berlian": ["0.05 ct", "0.10 ct", "0.25 ct"],
       "Detail": ["Polos", "Solitaire", "Halo Design"],
     },
   ),
