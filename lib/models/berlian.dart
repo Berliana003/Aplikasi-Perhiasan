@@ -31,14 +31,6 @@ class Berlian extends Product {
   String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
 
   // Setter
-  set karatBerlian(double value) {
-    if (value > 0) {
-      _karatBerlian = value;
-    } else {
-      throw Exception("❌ Karat berlian harus lebih dari 0");
-    }
-  }
-
   set updatePrice(double newPrice) {
     if (newPrice > 0) {
       price = newPrice;
@@ -69,30 +61,6 @@ class Berlian extends Product {
     } else {
       throw Exception("Nama produk tidak boleh kosong!");
     }
-  }
-
-  set updateKarat(double newKarat) {
-    if (newKarat > 0)
-      _karatBerlian = newKarat;
-    else
-      throw Exception("❌ Karat berlian harus positif!");
-  }
-
-  // Method Tambahan Polymorphism
-  // Hitung harga berdasarkan karat berlian (misalnya setiap karat punya nilai tambahan)
-  double getPriceByKarat() {
-    const hargaPerKarat = 50000000; // contoh nilai tambah per karat
-    return finalPrice + (_karatBerlian * hargaPerKarat);
-  }
-
-  // Cek apakah karat tergolong premium
-  bool isPremium() {
-    return _karatBerlian >= 1.0; // ≥ 1 karat dianggap premium
-  }
-
-  // Cek apakah karat kecil (perhiasan ringan)
-  bool isMiniDiamond() {
-    return _karatBerlian < 0.25;
   }
 
   // Override polymorphism untuk ProductDetailPage

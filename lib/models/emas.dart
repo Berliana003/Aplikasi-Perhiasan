@@ -31,13 +31,6 @@ class Emas extends Product {
   String get stockStatus => stock > 0 ? "Tersedia ($stock)" : "Habis";
 
   // Setter
-  set kadarEmas(double value) {
-    if (value < 0 || value > 100) {
-      throw ArgumentError("❌ Kadar emas harus antara 0–100%");
-    }
-    _kadarEmas = value;
-  }
-
   set updatePrice(double newPrice) {
     if (newPrice > 0) {
       price = newPrice;
@@ -70,27 +63,9 @@ class Emas extends Product {
     }
   }
 
-  set updateKadar(double newKadar) {
-    if (newKadar >= 0 && newKadar <= 100) {
-      _kadarEmas = newKadar;
-    } else {
-      throw Exception("❌ Kadar emas harus antara 0–100%");
-    }
-  }
-
-  // Hitung harga sebenarnya berdasarkan kadar emas
-  double getPriceByKadar() {
-    return finalPrice * (_kadarEmas / 100);
-  }
-
-  /// Cek apakah kadar emas tinggi (misalnya > 90%)
-  bool isKadarPremium() {
-    return _kadarEmas >= 90;
-  }
-
-  /// Cek apakah kadar emas murni (>= 99.99%)
-  bool isMurni() {
-    return _kadarEmas >= 99.9;
+  @override
+  String getExtraInfo() {
+    return "Kadar Emas: ${_kadarEmas.toStringAsFixed(2)}%";
   }
 
   // Override untuk memberi label khusus emas
